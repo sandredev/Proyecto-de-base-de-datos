@@ -5,11 +5,11 @@ En este repositorio se encuentra el proyecto de fin de curso de la asignatura **
 # Estructura del proyecto
 El proyecto posee la siguiente estructura de archivos y carpetas:
 ```
-│ diseño lógico/            # Diagramas, archivos y documentos usados para el diseño lógico
+│ diseño-lógico/            # Diagramas, archivos y documentos usados para el diseño lógico
 │
-│ diseño físico/            # Scripts, archivos y documentos usados para el diseño físico
+│ diseño-físico/            # Scripts, archivos y documentos usados para el diseño físico
 │
-│ diseño conceptual/        # Gráficos, archivos y documentos usados para el diseño conceptual
+│ diseño-conceptual/        # Gráficos, archivos y documentos usados para el diseño conceptual
 │
 │ informes/                 # Documentos donde se registra la actividad y el avance del proyecto, 
 │                             además de las decisiones tomadas y registro de evidencias del 
