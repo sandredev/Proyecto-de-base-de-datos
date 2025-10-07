@@ -74,7 +74,7 @@ CREATE TABLE Idiomas (
 
 CREATE TABLE IdiomasPorTour (
 	idIdioma INT,
-	idGuía INT,
+	idTour INT,
 	CONSTRAINT FKIdiomaTour FOREIGN KEY (idIdioma) REFERENCES Idiomas(idIdioma),
 	CONSTRAINT FKGuíaTour FOREIGN KEY (idGuía) REFERENCES Guías(idGuía),
 );
