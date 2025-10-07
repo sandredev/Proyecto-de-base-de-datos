@@ -13,8 +13,51 @@ CREATE TABLE Localizaciones (
 	CONSTRAINT PKLocalizaciones PRIMARY KEY (idLocalización),
 	CONSTRAINT FKTipoLocalización FOREIGN KEY (idTipoLocalización) REFERENCES TiposDeLocalización(idTipoLocalización),
 	CONSTRAINT NombreLocalizaciónVálida CHECK (TRIM(nombre) <> ''),
-	CONSTRAINT RangoGeograficoColombia CHECK (latitud BETWEEN -4.2 AND 13.5
+	CONSTRAINT RangoGeográficoColombia CHECK (latitud BETWEEN -4.2 AND 13.5
 											AND longitud BETWEEN -79.0 AND -66.0)
+);
+
+CREATE TABLE PuntosDeInterés (
+	idPuntoDeInterés INT,
+	nombre VARCHAR(100) NOT NULL,
+	descripción VARCHAR(1000),
+	latitud DECIMAL(8, 6) NOT NULL,
+	longitud DECIMAL(9, 6) NOT NULL,
+	tipos VARCHAR(100) NOT NULL,
+	serviciosYActividades VARCHAR(100) NOT NULL,
+	estado VARCHAR(20) NOT NULL,
+	CONSTRAINT PKPuntosDeInterés PRIMARY KEY (idPuntoDeInterés),
+	CONSTRAINT NombrePuntoDeInterésNoVacío CHECK (TRIM(nombre) <> ''),
+	CONSTRAINT DescripciónPuntoDeInterésNoVacía CHECK (TRIM(descripción) <> ''),
+	CONSTRAINT RangoGeográficoColombiaPuntoDeInterés CHECK (latitud BETWEEN -4.2 AND 13.5
+											AND longitud BETWEEN -79.0 AND -66.0),
+	CONSTRAINT TiposPuntoDeInterésNoVacío CHECK (TRIM(tipos) <> ''),
+	CONSTRAINT ServiciosYActividadesNoVacío CHECK (TRIM(serviciosYActividades) <> ''),
+	CONSTRAINT EstadoPuntoDeInterésNoVacío CHECK (TRIM(estado) <> '')
+);
+
+CREATE TABLE PuntosDeInterésDelTour (
+	idTour INT,
+	idPuntoDeInterés INT,
+	idPuntoTour INT,
+	CONSTRAINT FKTourPorPuntosDeInterés FOREIGN KEY (idTour) REFERENCES Tours(idTour),
+	CONSTRAINT FKPuntosDeInterésPorTour FOREIGN KEY (idPuntoDeInterés) REFERENCES PuntosDeInterés(idPuntoDeInterés),
+	CONSTRAINT PKPuntosDeInterésDelTour PRIMARY KEY (idPuntoTour)
+);
+
+CREATE TABLE Perfiles (
+	idPerfil INT,
+	fotoDePerfil VARCHAR(100),
+	email VARCHAR(254),
+	fechaCreación DATETIME2,
+	idIdioma INT,
+	idUsuario INT,
+	CONSTRAINT PKPerfiles PRIMARY KEY (idPerfil),
+	CONSTRAINT FotoDePerfilVálida CHECK (TRIM(fotoDePerfil) <> ''),
+	CONSTRAINT EmailÚnico UNIQUE (email),
+	CONSTRAINT EmailVálido CHECK (email LIKE '_%@_%._%'),
+	CONSTRAINT FechaCreaciónPerfilVálida CHECK (fechaCreación <= GETDATE()),
+
 );
 
 CREATE TABLE Guías (
@@ -47,7 +90,6 @@ CREATE TABLE Tours (
 	duración INT NOT NULL,
 	nombre VARCHAR(100) NOT NULL,
 	puntoDeEncuentro VARCHAR(150),
-	puntosDeInterés VARCHAR(1000) NOT NULL,
 	disponibilidad DATETIME2 NOT NULL,
 	descripción VARCHAR(1000) NOT NULL,
 	numParticipantes INT,
@@ -58,8 +100,7 @@ CREATE TABLE Tours (
 	CONSTRAINT TemáticaVálida CHECK (TRIM(temática) <> ''),
 	CONSTRAINT PuntoVálida CHECK (TRIM(puntoDeEncuentro) <> ''),
 	CONSTRAINT NumeroParticipantesPositivos CHECK (numParticipantes > 0),
-	CONSTRAINT DuraciónVálida CHECK (duración > 0 AND duración <= 720),
-	CONSTRAINT PuntosDeInterésVálidos CHECK (TRIM(puntosDeInterés) <> ''), 
+	CONSTRAINT DuraciónVálida CHECK (duración > 0 AND duración <= 720), 
 	CONSTRAINT DescripciónVálida CHECK (TRIM(descripción) <> ''),
 	CONSTRAINT FKLocalizaciónTour FOREIGN KEY (idLocalización) REFERENCES Localizaciones(idLocalización)
 );
@@ -74,7 +115,7 @@ CREATE TABLE Idiomas (
 
 CREATE TABLE IdiomasPorTour (
 	idIdioma INT,
-	idGuía INT,
+	idTour INT,
 	CONSTRAINT FKIdiomaTour FOREIGN KEY (idIdioma) REFERENCES Idiomas(idIdioma),
 	CONSTRAINT FKGuíaTour FOREIGN KEY (idGuía) REFERENCES Guías(idGuía),
 );
