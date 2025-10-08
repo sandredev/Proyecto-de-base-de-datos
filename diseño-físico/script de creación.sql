@@ -22,7 +22,7 @@ CREATE TABLE Guías (
 	nombres VARCHAR(50) NOT NULL,
 	apellidos VARCHAR(50) NOT NULL,
 	documento BIGINT NOT NULL,
-	foroDePerfil VARCHAR(MAX) NOT NULL,
+	fotoDePerfil VARCHAR(MAX) NOT NULL,
 	email VARCHAR(254) NOT NULL,
 	teléfono VARCHAR(20) NOT NULL,
 	esVerificado BIT NOT NULL,
@@ -38,7 +38,8 @@ CREATE TABLE Guías (
 	CONSTRAINT ApellidosGuíaVálidos CHECK (TRIM(apellidos) <> ''),
 	CONSTRAINT NúmeroGuíaVálido CHECK (teléfono LIKE '+%'),
 	CONSTRAINT EmailGuíaVálido CHECK (email LIKE '_%@_%._%'),
-	CONSTRAINT BiografíaGuíaVálida CHECK (TRIM(biografía) <> '')
+	CONSTRAINT BiografíaGuíaVálida CHECK (TRIM(biografía) <> ''),
+	CONSTRAINT FotoDePerfilValida CHECK (TRIM(fotoDePerfil) <> '' AND fotoDePerfil LIKE '_%._%')
 );
 
 CREATE TABLE Tours (
@@ -48,7 +49,7 @@ CREATE TABLE Tours (
 	nombre VARCHAR(100) NOT NULL,
 	puntoDeEncuentro VARCHAR(150),
 	puntosDeInterés VARCHAR(1000) NOT NULL,
-	disponibilidad DATETIME2 NOT NULL,
+	disponibilidad VARCHAR(100) NOT NULL,
 	descripción VARCHAR(1000) NOT NULL,
 	numParticipantes INT,
 	estáActivo BIT NOT NULL,
@@ -76,7 +77,7 @@ CREATE TABLE IdiomasPorTour (
 	idIdioma INT,
 	idTour INT,
 	CONSTRAINT FKIdiomaTour FOREIGN KEY (idIdioma) REFERENCES Idiomas(idIdioma),
-	CONSTRAINT FKGuíaTour FOREIGN KEY (idGuía) REFERENCES Guías(idGuía),
+	CONSTRAINT FKTourIdioma FOREIGN KEY (idTour) REFERENCES Tours(idTour),
 );
 
 CREATE TABLE Turistas (
