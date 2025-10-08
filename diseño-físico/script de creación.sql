@@ -13,7 +13,7 @@ CREATE TABLE Localizaciones (
 	CONSTRAINT PKLocalizaciones PRIMARY KEY (idLocalización),
 	CONSTRAINT FKTipoLocalización FOREIGN KEY (idTipoLocalización) REFERENCES TiposDeLocalización(idTipoLocalización),
 	CONSTRAINT NombreLocalizaciónVálida CHECK (TRIM(nombre) <> ''),
-	CONSTRAINT RangoGeograficoColombia CHECK (latitud BETWEEN -4.2 AND 13.5
+	CONSTRAINT RangoGeográficoColombia CHECK (latitud BETWEEN -4.2 AND 13.5
 											AND longitud BETWEEN -79.0 AND -66.0)
 );
 
@@ -39,7 +39,7 @@ CREATE TABLE Guías (
 	CONSTRAINT NúmeroGuíaVálido CHECK (teléfono LIKE '+%'),
 	CONSTRAINT EmailGuíaVálido CHECK (email LIKE '_%@_%._%'),
 	CONSTRAINT BiografíaGuíaVálida CHECK (TRIM(biografía) <> ''),
-	CONSTRAINT FotoDePerfilValida CHECK (TRIM(fotoDePerfil) <> '' AND fotoDePerfil LIKE '_%._%')
+	CONSTRAINT FotoDePerfilVálida CHECK (TRIM(fotoDePerfil) <> '' AND fotoDePerfil LIKE '_%._%')
 );
 
 CREATE TABLE Tours (
