@@ -1,11 +1,11 @@
 CREATE TABLE TiposDeLocalización (
-	idTipoLocalización INT,
+	idTipoLocalización INT IDENTITY(1, 1),
 	nombreTipoLocalización VARCHAR(100),
 	CONSTRAINT PKTiposDeLocalización PRIMARY KEY (idTipoLocalización)
 );
 
 CREATE TABLE Localizaciones (
-	idLocalización INT,
+	idLocalización INT IDENTITY(1, 1),
 	nombre VARCHAR(100) NOT NULL,
 	latitud DECIMAL(8, 6) NOT NULL,
 	longitud DECIMAL(9, 6) NOT NULL,
@@ -17,50 +17,8 @@ CREATE TABLE Localizaciones (
 											AND longitud BETWEEN -79.0 AND -66.0)
 );
 
-CREATE TABLE Tours (
-	idTour INT,
-	temática VARCHAR(100) NOT NULL,
-	duración INT NOT NULL,
-	nombre VARCHAR(100) NOT NULL,
-	puntoDeEncuentro VARCHAR(150),
-	disponibilidad DATETIME2 NOT NULL,
-	descripción VARCHAR(1000) NOT NULL,
-	maxParticipantes INT,
-	estáActivo BIT NOT NULL,
-	idLocalización INT NOT NULL,
-	CONSTRAINT PKTours PRIMARY KEY (idTour),
-	CONSTRAINT NombreTourVálido CHECK (TRIM(nombre) <> ''),
-	CONSTRAINT TemáticaVálida CHECK (TRIM(temática) <> ''),
-	CONSTRAINT PuntoVálida CHECK (TRIM(puntoDeEncuentro) <> ''),
-	CONSTRAINT NumeroParticipantesPositivos CHECK (maxParticipantes > 0),
-	CONSTRAINT DuraciónVálida CHECK (duración > 0 AND duración <= 720), 
-	CONSTRAINT DescripciónVálida CHECK (TRIM(descripción) <> ''),
-	CONSTRAINT FKLocalizaciónTour FOREIGN KEY (idLocalización) REFERENCES Localizaciones(idLocalización)
-);
-
-CREATE TABLE Usuarios (
-	idUsuario INT,
-	nombres VARCHAR(50) NOT NULL,
-	apellidos VARCHAR(50) NOT NULL,
-	teléfono VARCHAR(20) NOT NULL,
-	tieneEPS BIT NOT NULL,
-	documentoUsuario VARCHAR(30) NOT NULL,
-	idLocalización INT NOT NULL,
-	CONSTRAINT PKUsuarios PRIMARY KEY (idUsuario),
-	CONSTRAINT FKLocalizaciónUsuario FOREIGN KEY (idLocalización) REFERENCES Localizaciones(idLocalización),
-	CONSTRAINT NombresVálidos CHECK (TRIM(nombres) <> '' AND nombres NOT LIKE '%[^0-9]%'),
-	CONSTRAINT ApellidosVálidos CHECK (TRIM(apellidos) <> '' AND apellidos NOT LIKE '%[^0-9]%'),
-	CONSTRAINT DocumentoVálido CHECK (TRIM(documentoUsuario) <> '' AND LEN(documentoUsuario) >= 7),
-	CONSTRAINT TeléfonoÚnico UNIQUE (teléfono),
-	CONSTRAINT TeléfonoVálido CHECK (teléfono LIKE '+[0-9][0-9] %[0-9]%' 
-									OR teléfono LIKE '+[0-9][0-9][0-9] %[0-9]%') -- cadenas que empiezan en +núm 
-																		         -- donde núm es un número de 2 a 3 digitos
-																				 -- y les sigue una cadena con almenos un número en ellas
-																				 -- (es lo más cercano que se puede hacer a validar un número de teléfono)
-);
-
 CREATE TABLE PuntosDeInterés (
-	idPuntoDeInterés INT,
+	idPuntoDeInterés INT IDENTITY(1, 1),
 	nombre VARCHAR(100) NOT NULL,
 	descripción VARCHAR(1000),
 	latitud DECIMAL(8, 6) NOT NULL,
@@ -78,17 +36,59 @@ CREATE TABLE PuntosDeInterés (
 	CONSTRAINT EstadoPuntoDeInterésNoVacío CHECK (TRIM(estado) <> '')
 );
 
+CREATE TABLE Tours (
+	idTour INT IDENTITY(1, 1),
+	temática VARCHAR(100) NOT NULL,
+	duración DECIMAL(3, 2) NOT NULL,
+	nombre VARCHAR(100) NOT NULL,
+	idPuntoDeInterésInicial INT NOT NULL,
+	disponibilidad DATETIME2 NOT NULL,
+	descripción VARCHAR(1000) NOT NULL,
+	maxParticipantes INT,
+	estáActivo BIT NOT NULL,
+	idLocalización INT NOT NULL,
+	CONSTRAINT PKTours PRIMARY KEY (idTour),
+	CONSTRAINT NombreTourVálido CHECK (TRIM(nombre) <> ''),
+	CONSTRAINT TemáticaVálida CHECK (TRIM(temática) <> ''),
+	CONSTRAINT NumeroParticipantesPositivos CHECK (maxParticipantes > 0),
+	CONSTRAINT DuraciónVálida CHECK (duración > 0 AND duración <= 720), 
+	CONSTRAINT DescripciónVálida CHECK (TRIM(descripción) <> ''),
+	CONSTRAINT FKLocalizaciónTour FOREIGN KEY (idLocalización) REFERENCES Localizaciones(idLocalización),
+	CONSTRAINT FKPuntoDeInicioTour FOREIGN KEY (idPuntoDeInterésInicial) REFERENCEs PuntosDeInterés(idPuntoDeInterés)
+);
+
+CREATE TABLE Usuarios (
+	idUsuario INT IDENTITY(1, 1),
+	nombres VARCHAR(50) NOT NULL,
+	apellidos VARCHAR(50) NOT NULL,
+	teléfono VARCHAR(20) NOT NULL,
+	tieneEPS BIT NOT NULL,
+	documentoUsuario VARCHAR(25) NOT NULL,
+	idLocalización INT NOT NULL,
+	CONSTRAINT PKUsuarios PRIMARY KEY (idUsuario),
+	CONSTRAINT FKLocalizaciónUsuario FOREIGN KEY (idLocalización) REFERENCES Localizaciones(idLocalización),
+	CONSTRAINT NombresVálidos CHECK (TRIM(nombres) <> '' AND nombres NOT LIKE '%[^0-9]%'),
+	CONSTRAINT ApellidosVálidos CHECK (TRIM(apellidos) <> '' AND apellidos NOT LIKE '%[^0-9]%'),
+	CONSTRAINT DocumentoVálido CHECK (TRIM(documentoUsuario) <> '' AND LEN(documentoUsuario) >= 9),
+	CONSTRAINT TeléfonoÚnico UNIQUE (teléfono),
+	CONSTRAINT TeléfonoVálido CHECK (teléfono LIKE '+[0-9][0-9] %[0-9]%' 
+									OR teléfono LIKE '+[0-9][0-9][0-9] %[0-9]%') -- cadenas que empiezan en +núm 
+																		         -- donde núm es un número de 2 a 3 digitos
+																				 -- y les sigue una cadena con almenos un número en ellas
+																				 -- (es lo más cercano que se puede hacer a validar un número de teléfono)
+);
+
 CREATE TABLE PuntosDeInterésDelTour (
+	idPuntoTour INT IDENTITY(1, 1),
 	idTour INT,
 	idPuntoDeInterés INT,
-	idPuntoTour INT,
 	CONSTRAINT FKTourPorPuntosDeInterés FOREIGN KEY (idTour) REFERENCES Tours(idTour),
 	CONSTRAINT FKPuntosDeInterésPorTour FOREIGN KEY (idPuntoDeInterés) REFERENCES PuntosDeInterés(idPuntoDeInterés),
 	CONSTRAINT PKPuntosDeInterésDelTour PRIMARY KEY (idPuntoTour)
 );
 
 CREATE TABLE Idiomas (
-	idIdioma INT,
+	idIdioma INT IDENTITY(1, 1),
 	nombre VARCHAR(30) NOT NULL,
 	CONSTRAINT PKIdiomas PRIMARY KEY (idIdioma),
 	CONSTRAINT nombreIdiomaÚnico UNIQUE (nombre),
@@ -102,8 +102,8 @@ CREATE TABLE Perfiles (
 	fechaCreación DATETIME2,
 	idIdioma INT,
 	CONSTRAINT PKPerfiles PRIMARY KEY (idPerfil),
-	CONSTRAINT FKPerfilesIdioma FOREIGN KEY (idIdioma) REFERENCES Idiomas(idIdioma),
 	CONSTRAINT FKPerfilesUsuario FOREIGN KEY (idPerfil) REFERENCES Usuarios(idUsuario),
+	CONSTRAINT FKPerfilesIdioma FOREIGN KEY (idIdioma) REFERENCES Idiomas(idIdioma),
 	CONSTRAINT FotoDePerfilVálida CHECK (TRIM(fotoDePerfil) <> '' AND fotoDePerfil LIKE '_%._%'),
 	CONSTRAINT EmailÚnico UNIQUE (email),
 	CONSTRAINT EmailVálido CHECK (email LIKE '_%@_%._%'),
@@ -141,7 +141,7 @@ CREATE TABLE IdiomasPorTour (
 );
 
 CREATE TABLE Reservas (
-	idReserva INT,
+	idReserva INT IDENTITY(1, 1),
 	cuposReservados INT NOT NULL,
 	estadoReserva VARCHAR(20) NOT NULL,
 	idTuristaReserva INT,
