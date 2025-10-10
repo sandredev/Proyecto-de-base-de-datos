@@ -1,123 +1,135 @@
-CREATE TABLE TiposDeLocalizaciÛn (
-	idTipoLocalizaciÛn INT,
-	nombreTipoLocalizaciÛn VARCHAR(100),
-	CONSTRAINT PKTiposDeLocalizaciÛn PRIMARY KEY (idTipoLocalizaciÛn)
+CREATE TABLE TiposDeLocalizaci√≥n (
+	idTipoLocalizaci√≥n INT,
+	nombreTipoLocalizaci√≥n VARCHAR(100),
+	CONSTRAINT PKTiposDeLocalizaci√≥n PRIMARY KEY (idTipoLocalizaci√≥n)
 );
 
 CREATE TABLE Localizaciones (
-	idLocalizaciÛn INT,
+	idLocalizaci√≥n INT,
 	nombre VARCHAR(100) NOT NULL,
 	latitud DECIMAL(8, 6) NOT NULL,
 	longitud DECIMAL(9, 6) NOT NULL,
-	idTipoLocalizaciÛn INT NOT NULL,
-	CONSTRAINT PKLocalizaciones PRIMARY KEY (idLocalizaciÛn),
-	CONSTRAINT FKTipoLocalizaciÛn FOREIGN KEY (idTipoLocalizaciÛn) REFERENCES TiposDeLocalizaciÛn(idTipoLocalizaciÛn),
-	CONSTRAINT NombreLocalizaciÛnV·lida CHECK (TRIM(nombre) <> ''),
-	CONSTRAINT RangoGeogr·ficoColombia CHECK (latitud BETWEEN -4.2 AND 13.5
+	idTipoLocalizaci√≥n INT NOT NULL,
+	CONSTRAINT PKLocalizaciones PRIMARY KEY (idLocalizaci√≥n),
+	CONSTRAINT FKTipoLocalizaci√≥n FOREIGN KEY (idTipoLocalizaci√≥n) REFERENCES TiposDeLocalizaci√≥n(idTipoLocalizaci√≥n),
+	CONSTRAINT NombreLocalizaci√≥nV√°lida CHECK (TRIM(nombre) <> ''),
+	CONSTRAINT RangoGeogr√°ficoColombia CHECK (latitud BETWEEN -4.2 AND 13.5
 											AND longitud BETWEEN -79.0 AND -66.0)
+);
+
+CREATE TABLE Gu√≠as (
+	idGu√≠a INT,
+	nombres VARCHAR(50) NOT NULL,
+	apellidos VARCHAR(50) NOT NULL,
+	documento BIGINT NOT NULL,
+	fotoDePerfil VARCHAR(MAX) NOT NULL,
+	email VARCHAR(254) NOT NULL,
+	tel√©fono VARCHAR(20) NOT NULL,
+	esVerificado BIT NOT NULL,
+	biograf√≠a VARCHAR(1000),
+	idLocalizaci√≥n INT,
+	CONSTRAINT PKGu√≠as PRIMARY KEY (idGu√≠a),
+	CONSTRAINT FKLocalizaci√≥nGu√≠a FOREIGN KEY (idLocalizaci√≥n) REFERENCES Localizaciones(idLocalizaci√≥n),
+	CONSTRAINT TelefonoGu√≠a√önico UNIQUE (tel√©fono),
+	CONSTRAINT DocumentoGu√≠a√önico UNIQUE (documento),
+	CONSTRAINT documentoGu√≠aV√°lido CHECK (LEN(CAST(documento AS VARCHAR(20))) >= 7
+								   AND LEN(CAST(documento AS VARCHAR(20))) <= 18),
+	CONSTRAINT NombresGu√≠aV√°lidos CHECK (TRIM(nombres) <> ''),
+	CONSTRAINT ApellidosGu√≠aV√°lidos CHECK (TRIM(apellidos) <> ''),
+	CONSTRAINT N√∫meroGu√≠aV√°lido CHECK (tel√©fono LIKE '+%'),
+	CONSTRAINT EmailGu√≠aV√°lido CHECK (email LIKE '_%@_%._%'),
+	CONSTRAINT Biograf√≠aGu√≠aV√°lida CHECK (TRIM(biograf√≠a) <> ''),
+	CONSTRAINT FotoDePerfilV√°lida CHECK (TRIM(fotoDePerfil) <> '' AND fotoDePerfil LIKE '_%._%')
 );
 
 CREATE TABLE Tours (
 	idTour INT,
-	tem·tica VARCHAR(100) NOT NULL,
-	duraciÛn INT NOT NULL,
+	tem√°tica VARCHAR(100) NOT NULL,
+	duraci√≥n INT NOT NULL,
 	nombre VARCHAR(100) NOT NULL,
 	puntoDeEncuentro VARCHAR(150),
-	disponibilidad DATETIME2 NOT NULL,
-	descripciÛn VARCHAR(1000) NOT NULL,
+	puntosDeInter√©s VARCHAR(1000) NOT NULL,
+	disponibilidad VARCHAR(100) NOT NULL,
+	descripci√≥n VARCHAR(1000) NOT NULL,
 	maxParticipantes INT,
-	est·Activo BIT NOT NULL,
-	idLocalizaciÛn INT NOT NULL,
+	est√°Activo BIT NOT NULL,
+	idLocalizaci√≥n INT NOT NULL,
 	CONSTRAINT PKTours PRIMARY KEY (idTour),
-	CONSTRAINT NombreTourV·lido CHECK (TRIM(nombre) <> ''),
-	CONSTRAINT Tem·ticaV·lida CHECK (TRIM(tem·tica) <> ''),
-	CONSTRAINT PuntoV·lida CHECK (TRIM(puntoDeEncuentro) <> ''),
+	CONSTRAINT NombreTourV√°lido CHECK (TRIM(nombre) <> ''),
+	CONSTRAINT Tem√°ticaV√°lida CHECK (TRIM(tem√°tica) <> ''),
+	CONSTRAINT PuntoV√°lida CHECK (TRIM(puntoDeEncuentro) <> ''),
 	CONSTRAINT NumeroParticipantesPositivos CHECK (maxParticipantes > 0),
-	CONSTRAINT DuraciÛnV·lida CHECK (duraciÛn > 0 AND duraciÛn <= 720), 
-	CONSTRAINT DescripciÛnV·lida CHECK (TRIM(descripciÛn) <> ''),
-	CONSTRAINT FKLocalizaciÛnTour FOREIGN KEY (idLocalizaciÛn) REFERENCES Localizaciones(idLocalizaciÛn)
+	CONSTRAINT Duraci√≥nV√°lida CHECK (duraci√≥n > 0 AND duraci√≥n <= 720), 
+	CONSTRAINT Descripci√≥nV√°lida CHECK (TRIM(descripci√≥n) <> ''),
+	CONSTRAINT FKLocalizaci√≥nTour FOREIGN KEY (idLocalizaci√≥n) REFERENCES Localizaciones(idLocalizaci√≥n)
 );
 
 CREATE TABLE Usuarios (
 	idUsuario INT,
 	nombres VARCHAR(50) NOT NULL,
 	apellidos VARCHAR(50) NOT NULL,
-	telÈfono VARCHAR(20) NOT NULL,
+	tel√©fono VARCHAR(20) NOT NULL,
 	tieneEPS BIT NOT NULL,
 	documentoUsuario VARCHAR(30) NOT NULL,
-	idLocalizaciÛn INT NOT NULL,
+	idLocalizaci√≥n INT NOT NULL,
 	CONSTRAINT PKUsuarios PRIMARY KEY (idUsuario),
-	CONSTRAINT FKLocalizaciÛnUsuario FOREIGN KEY (idLocalizaciÛn) REFERENCES Localizaciones(idLocalizaciÛn),
-	CONSTRAINT NombresV·lidos CHECK (TRIM(nombres) <> '' AND nombres NOT LIKE '%[^0-9]%'),
-	CONSTRAINT ApellidosV·lidos CHECK (TRIM(apellidos) <> '' AND apellidos NOT LIKE '%[^0-9]%'),
-	CONSTRAINT DocumentoV·lido CHECK (TRIM(documentoUsuario) <> '' AND LEN(documentoUsuario) >= 7),
-	CONSTRAINT TelÈfono⁄nico UNIQUE (telÈfono),
-	CONSTRAINT TelÈfonoV·lido CHECK (telÈfono LIKE '+[0-9][0-9] %[0-9]%' 
-									OR telÈfono LIKE '+[0-9][0-9][0-9] %[0-9]%') -- cadenas que empiezan en +n˙m 
-																		         -- donde n˙m es un n˙mero de 2 a 3 digitos
-																				 -- y les sigue una cadena con almenos un n˙mero en ellas
-																				 -- (es lo m·s cercano que se puede hacer a validar un n˙mero de telÈfono)
+	CONSTRAINT FKLocalizaci√≥nUsuario FOREIGN KEY (idLocalizaci√≥n) REFERENCES Localizaciones(idLocalizaci√≥n),
+	CONSTRAINT NombresV√°lidos CHECK (TRIM(nombres) <> '' AND nombres NOT LIKE '%[^0-9]%'),
+	CONSTRAINT ApellidosV√°lidos CHECK (TRIM(apellidos) <> '' AND apellidos NOT LIKE '%[^0-9]%'),
+	CONSTRAINT DocumentoV√°lido CHECK (TRIM(documentoUsuario) <> '' AND LEN(documentoUsuario) >= 7),
+	CONSTRAINT Tel√©fono√önico UNIQUE (tel√©fono),
+	CONSTRAINT Tel√©fonoV√°lido CHECK (tel√©fono LIKE '+[0-9][0-9] %[0-9]%' 
+									OR tel√©fono LIKE '+[0-9][0-9][0-9] %[0-9]%') -- cadenas que empiezan en +n√∫m 
+																		         -- donde n√∫m es un n√∫mero de 2 a 3 digitos
+																				 -- y les sigue una cadena con almenos un n√∫mero en ellas
+																				 -- (es lo m√°s cercano que se puede hacer a validar un n√∫mero de tel√©fono)
 );
 
-CREATE TABLE PuntosDeInterÈs (
-	idPuntoDeInterÈs INT,
+CREATE TABLE PuntosDeInter√©s (
+	idPuntoDeInter√©s INT,
 	nombre VARCHAR(100) NOT NULL,
-	descripciÛn VARCHAR(1000),
+	descripci√≥n VARCHAR(1000),
 	latitud DECIMAL(8, 6) NOT NULL,
 	longitud DECIMAL(9, 6) NOT NULL,
 	tipos VARCHAR(100) NOT NULL,
 	serviciosYActividades VARCHAR(100) NOT NULL,
 	estado VARCHAR(20) NOT NULL,
-	CONSTRAINT PKPuntosDeInterÈs PRIMARY KEY (idPuntoDeInterÈs),
-	CONSTRAINT NombrePuntoDeInterÈsNoVacÌo CHECK (TRIM(nombre) <> ''),
-	CONSTRAINT DescripciÛnPuntoDeInterÈsV·lida CHECK (TRIM(descripciÛn) <> ''),
-	CONSTRAINT RangoGeogr·ficoColombiaPuntoDeInterÈs CHECK (latitud BETWEEN -4.2 AND 13.5
+	CONSTRAINT PKPuntosDeInter√©s PRIMARY KEY (idPuntoDeInter√©s),
+	CONSTRAINT NombrePuntoDeInter√©sNoVac√≠o CHECK (TRIM(nombre) <> ''),
+	CONSTRAINT Descripci√≥nPuntoDeInter√©sV√°lida CHECK (TRIM(descripci√≥n) <> ''),
+	CONSTRAINT RangoGeogr√°ficoColombiaPuntoDeInter√©s CHECK (latitud BETWEEN -4.2 AND 13.5
 											AND longitud BETWEEN -79.0 AND -66.0),
-	CONSTRAINT TiposPuntoDeInterÈsNoVacÌo CHECK (TRIM(tipos) <> ''),
-	CONSTRAINT ServiciosYActividadesNoVacÌo CHECK (TRIM(serviciosYActividades) <> ''),
-	CONSTRAINT EstadoPuntoDeInterÈsNoVacÌo CHECK (TRIM(estado) <> '')
+	CONSTRAINT TiposPuntoDeInter√©sNoVac√≠o CHECK (TRIM(tipos) <> ''),
+	CONSTRAINT ServiciosYActividadesNoVac√≠o CHECK (TRIM(serviciosYActividades) <> ''),
+	CONSTRAINT EstadoPuntoDeInter√©sNoVac√≠o CHECK (TRIM(estado) <> '')
 );
 
-CREATE TABLE PuntosDeInterÈsDelTour (
+CREATE TABLE PuntosDeInter√©sDelTour (
 	idTour INT,
-	idPuntoDeInterÈs INT,
+	idPuntoDeInter√©s INT,
 	idPuntoTour INT,
-	CONSTRAINT FKTourPorPuntosDeInterÈs FOREIGN KEY (idTour) REFERENCES Tours(idTour),
-	CONSTRAINT FKPuntosDeInterÈsPorTour FOREIGN KEY (idPuntoDeInterÈs) REFERENCES PuntosDeInterÈs(idPuntoDeInterÈs),
-	CONSTRAINT PKPuntosDeInterÈsDelTour PRIMARY KEY (idPuntoTour)
+	CONSTRAINT FKTourPorPuntosDeInter√©s FOREIGN KEY (idTour) REFERENCES Tours(idTour),
+	CONSTRAINT FKPuntosDeInter√©sPorTour FOREIGN KEY (idPuntoDeInter√©s) REFERENCES PuntosDeInter√©s(idPuntoDeInter√©s),
+	CONSTRAINT PKPuntosDeInter√©sDelTour PRIMARY KEY (idPuntoTour)
 );
 
 CREATE TABLE Idiomas (
 	idIdioma INT,
 	nombre VARCHAR(30) NOT NULL,
 	CONSTRAINT PKIdiomas PRIMARY KEY (idIdioma),
-	CONSTRAINT nombreIdioma⁄nico UNIQUE (nombre),
-	CONSTRAINT NombreIdiomaV·lido CHECK (TRIM(nombre) <> '') 
+	CONSTRAINT nombreIdioma√önico UNIQUE (nombre),
+	CONSTRAINT NombreIdiomaV√°lido CHECK (TRIM(nombre) <> '') 
 );
 
 CREATE TABLE Perfiles (
 	idPerfil INT,
 	fotoDePerfil VARCHAR(100),
 	email VARCHAR(254),
-	fechaCreaciÛn DATETIME2,
+	fechaCreaci√≥n DATETIME2,
 	idIdioma INT,
-	CONSTRAINT PKPerfiles PRIMARY KEY (idPerfil),
-	CONSTRAINT FKPerfilesIdioma FOREIGN KEY (idIdioma) REFERENCES Idiomas(idIdioma),
-	CONSTRAINT FKPerfilesUsuario FOREIGN KEY (idPerfil) REFERENCES Usuarios(idUsuario),
-	CONSTRAINT FotoDePerfilV·lida CHECK (TRIM(fotoDePerfil) <> '' AND fotoDePerfil LIKE '_%._%'),
-	CONSTRAINT Email⁄nico UNIQUE (email),
-	CONSTRAINT EmailV·lido CHECK (email LIKE '_%@_%._%'),
-	CONSTRAINT FechaCreaciÛnPerfilV·lida CHECK (fechaCreaciÛn <= GETDATE())
-);
-
-CREATE TABLE GuÌas (
-	idGuÌa INT,
-	esVerificado BIT NOT NULL DEFAULT 0,
-	biografÌa VARCHAR(1000),
-	descripciÛn VARCHAR(1000) NOT NULL,
-	CONSTRAINT BiografÌaGuÌaV·lida CHECK (TRIM(biografÌa) <> ''),
-	CONSTRAINT PKGuÌa PRIMARY KEY (idGuÌa),
-	CONSTRAINT FKGuÌaPerfil FOREIGN KEY (idGuÌa) REFERENCES Perfiles(idPerfil)
+	idTour INT,
+	CONSTRAINT FKIdiomaTour FOREIGN KEY (idIdioma) REFERENCES Idiomas(idIdioma),
+	CONSTRAINT FKTourIdioma FOREIGN KEY (idTour) REFERENCES Tours(idTour),
 );
 
 CREATE TABLE Turistas (
@@ -129,7 +141,7 @@ CREATE TABLE Turistas (
 CREATE TABLE IdiomasPorPerfil (
 	idIdioma INT,
 	idPerfil INT,
-	CONSTRAINT FKIdiomaGuÌa FOREIGN KEY (idIdioma) REFERENCES Idiomas(idIdioma),
+	CONSTRAINT FKIdiomaGu√≠a FOREIGN KEY (idIdioma) REFERENCES Idiomas(idIdioma),
 	CONSTRAINT FKPerfil FOREIGN KEY (idPerfil) REFERENCES Perfiles(idPerfil),
 );
 
@@ -151,5 +163,5 @@ CREATE TABLE Reservas (
 	CONSTRAINT FKTuristaReserva FOREIGN KEY (idTuristaReserva) REFERENCES Turistas(idTurista),
 	CONSTRAINT FKTourReserva FOREIGN KEY (idTour) REFERENCES Tours(idTour),
 	CONSTRAINT CuposPositivos CHECK (cuposReservados > 0),
-	CONSTRAINT estadoV·lido CHECK (TRIM(estadoReserva) <> '')
+	CONSTRAINT estadoV√°lido CHECK (TRIM(estadoReserva) <> '')
 );
