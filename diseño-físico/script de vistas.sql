@@ -1,40 +1,45 @@
+USE Freetour;
+GO
+
 ---Vistas---
 -----1. tours disponibles--------
-CREATE VIEW ToursDisponibles AS
+CREATE OR ALTER VIEW ToursDisponibles AS
 SELECT 
     t.idTour,
     t.nombreTour AS 'Nombre Tour',
     f.fecha,
-    CONCAT(U.nombreUsuario, ' ', U.apellidoUsuario) AS 'Nombre guía',
+    CONCAT(U.nombreUsuario, ' ', U.apellidoUsuario) AS 'Nombre guÃ­a',
     t.maxParticipantesTour AS 'Cupos disponibles',
     i.nombreIdioma AS 'Idioma del Tour',
-    r.nombreRegión AS 'Región'
+    r.nombreRegiÃ³n AS 'RegiÃ³n'
 FROM Tours t
 INNER JOIN EstadosDelTour edt ON t.idTour = edt.idTour
 INNER JOIN Estados e ON edt.idEstado = e.idEstado
-LEFT JOIN GuíasPorTour gpt ON t.idTour = gpt.idTour
-LEFT JOIN Guías g ON gpt.idGuía = g.idPerfilGuía
-LEFT JOIN Perfiles p ON g.idPerfilGuía = p.idPerfilUsuario
+LEFT JOIN GuÃ­asPorTour gpt ON t.idTour = gpt.idTour
+LEFT JOIN GuÃ­as g ON gpt.idGuÃ­a = g.idPerfilGuÃ­a
+LEFT JOIN Perfiles p ON g.idPerfilGuÃ­a = p.idPerfilUsuario
 LEFT JOIN Usuarios u ON p.idPerfilUsuario = u.idUsuario
 LEFT JOIN IdiomasPorTour it ON t.idTour = it.idTour
 LEFT JOIN Idiomas i ON it.idIdioma = i.idIdioma
 LEFT JOIN Sitios s ON t.idSitio = s.idSitio
 LEFT JOIN Departamentos d ON s.idDepartamento = d.idDepartamento
-LEFT JOIN Regiones r ON d.idRegión = r.idRegión
+LEFT JOIN Regiones r ON d.idRegiÃ³n = r.idRegiÃ³n
 LEFT JOIN FechasPorTour fpt ON t.idTour = fpt.idTour
 LEFT JOIN FechasTour f ON fpt.idFechaTour = f.idFechaTour
-WHERE E.nombreEstado = 'Disponible';
+WHERE e.nombreEstado = 'disponible'
 
+GO
 
---------2. Reservas activas--------------
-CREATE VIEW ReservasActivas AS
+--------2. Reservas activas por turistas--------------
+CREATE OR ALTER VIEW ReservasActivas AS
 SELECT 
     r.idReserva,
     t.nombreTour AS 'Nombre Tour',
-    r.fechaRealizaciónReserva AS 'Fecha reserva',
+    r.fechaRealizaciÃ³nReserva AS 'Fecha reserva',
+    ER.nombreEstado AS 'Estado reserva',
     CONCAT(u.nombreUsuario, ' ', u.apellidoUsuario) AS 'Nombre turista'
 FROM Reservas r
-JOIN SesionesTour st ON r.idSesiónTour = ST.idSesiónTour
+JOIN SesionesTour st ON r.idSesiÃ³nTour = ST.idSesiÃ³nTour
 JOIN FechasTour ft ON st.idFechaTour = ft.idFechaTour
 JOIN FechasPorTour fpt ON ft.idFechaTour = fpt.idFechaTour
 JOIN Tours t ON fpt.idTour = t.idTour
@@ -45,12 +50,14 @@ JOIN Perfiles pe ON tu.idPerfilTurista = pe.idPerfilUsuario
 JOIN Usuarios u ON pe.idPerfilUsuario = u.idUsuario
 WHERE er.nombreEstado IN ('Pendiente', 'Confirmada', 'En curso');
 
---------------------3. Reservas por usuario-------------------------
-CREATE VIEW ReservaPorUsuario AS
+GO 
+
+--------------------3. Reservas por turistas-------------------------
+CREATE OR ALTER VIEW ReservaPorUsuario AS
 SELECT
-    CONCAT(u.nombreUsuario, ' ', u.apellidoUsuario) AS 'Nombre turista',
+    CONCAT(u.nombreUsuario, ' ', u.apellidoUsuario) AS 'Nombre turistas',
     tou.nombreTour AS 'Nombre tour',
-    s.horaInicioSesión AS 'Hora tour',
+    s.horaInicioSesiÃ³n AS 'Hora tour',
     ft.fecha AS 'Fecha Tour',
     r.cuposReservados AS Cupos,
     er.nombreEstado AS 'Estado reserva'
@@ -58,39 +65,45 @@ FROM Reservas r
 JOIN Turistas tu ON r.idTurista = tu.idPerfilTurista
 JOIN Perfiles p ON tu.idPerfilTurista = p.idPerfilUsuario
 JOIN Usuarios u ON p.idPerfilUsuario = u.idUsuario
-JOIN SesionesTour s ON r.idSesiónTour = s.idSesiónTour
+JOIN SesionesTour s ON r.idSesiÃ³nTour = s.idSesiÃ³nTour
 JOIN FechasTour ft ON s.idFechaTour = ft.idFechaTour
 JOIN FechasPorTour fpt ON ft.idFechaTour = fpt.idFechaTour
 JOIN Tours tou ON fpt.idTour = tou.idTour
 JOIN EstadosPorReserva epr ON r.idReserva = epr.idReserva
 JOIN EstadosReserva er ON epr.idEstado = er.idEstadoReserva;
 
+GO
+
 -----------------4. Duracion en horas de cada sesion de los tours------------
-CREATE VIEW DuracionSesiones AS
+CREATE OR ALTER VIEW DuracionSesiones AS
 SELECT 
-    s.idSesiónTour,
+    s.idSesiÃ³nTour,
     t.nombreTour AS 'Nombre Tour',
-    CAST(DATEDIFF(MINUTE, s.horaInicioSesión, s.horaFinSesión) / 60.0 AS DECIMAL(10,2)) AS 'Duración en horas'
+    CAST(DATEDIFF(MINUTE, s.horaInicioSesiÃ³n, s.horaFinSesiÃ³n) / 60.0 AS DECIMAL(4,2)) AS 'DuraciÃ³n en horas'
 FROM SesionesTour s
 JOIN FechasTour ft ON s.idFechaTour = ft.idFechaTour
 JOIN FechasPorTour fpt ON ft.idFechaTour = fpt.idFechaTour
 JOIN Tours t ON fpt.idTour = t.idTour;
 
+GO
+
 ------------5. Propinas totales por guia-----------------------------
-CREATE VIEW PropinasPorGuia AS
+CREATE OR ALTER  VIEW PropinasPorGuia AS
 SELECT
-    g.idPerfilGuía AS idGuia,
-    CONCAT(u.nombreUsuario, ' ', u.apellidoUsuario) AS 'Nombre Guía',
+    g.idPerfilGuÃ­a AS idGuia,
+    CONCAT(u.nombreUsuario, ' ', u.apellidoUsuario) AS 'Nombre GuÃ­a',
     SUM(p.montoPropina) AS 'Total propinas',
     COUNT(p.idPropina) AS 'Cantidad propinas'
-FROM Guías g
-JOIN Perfiles pr ON g.idPerfilGuía = pr.idPerfilUsuario
+FROM GuÃ­as g
+JOIN Perfiles pr ON g.idPerfilGuÃ­a = pr.idPerfilUsuario
 JOIN Usuarios u ON pr.idPerfilUsuario = u.idUsuario
-LEFT JOIN Propinas p ON g.idPerfilGuía = p.idGuía
-GROUP BY g.idPerfilGuía, u.nombreUsuario, u.apellidoUsuario;
+LEFT JOIN Propinas p ON g.idPerfilGuÃ­a = p.idGuÃ­a
+GROUP BY g.idPerfilGuÃ­a, u.nombreUsuario, u.apellidoUsuario;
+
+GO
 
 ------------------6. Promedio propias por tour--------------------
-CREATE VIEW PromedioPropinasPorTour AS
+CREATE OR ALTER VIEW PromedioPropinasPorTour AS
 WITH CTEPropinas AS (
     SELECT 
         p.idTour,
@@ -99,16 +112,18 @@ WITH CTEPropinas AS (
 )
 SELECT
     t.idTour,
-    t.nombreTour AS 'Nombre Tour',
-    AVG(c.montoPropina) AS 'Promedio propinas',
-    SUM(c.montoPropina) AS 'Total propinas',
-    COUNT(c.montoPropina) AS 'Cantidad propinas'
+    t.nombreTour AS [Nombre Tour],
+    CAST(AVG(c.montoPropina) AS DECIMAL(10,2)) AS [Promedio propinas],
+    CAST(SUM(c.montoPropina) AS DECIMAL(10,2)) AS [Total propinas],
+    COUNT(c.montoPropina) AS [Cantidad propinas]
 FROM Tours t
 LEFT JOIN CTEPropinas c ON t.idTour = c.idTour
 GROUP BY t.idTour, t.nombreTour;
 
+GO
+
 ---------------7. Fechas por cada tour--------------------------
-CREATE VIEW ToursCantidadFechas AS
+CREATE OR ALTER VIEW ToursCantidadFechas AS
 WITH Fechas AS (
     SELECT 
         fpt.idTour,
@@ -123,38 +138,44 @@ SELECT
 FROM Tours t
 LEFT JOIN Fechas f ON t.idTour = f.idTour;
 
+GO
+
 ------------------8. Guias con mas tours-----------------------
-CREATE VIEW GuiasConMasTours AS
+CREATE OR ALTER VIEW GuiasConMasTours AS
 WITH ToursPorGuia AS (
     SELECT
-        gpt.idGuía AS idGuia,
+        gpt.idGuÃ­a AS idGuia,
         COUNT(gpt.idTour) AS totalTours
-    FROM GuíasPorTour gpt
-    GROUP BY gpt.idGuía
+    FROM GuÃ­asPorTour gpt
+    GROUP BY gpt.idGuÃ­a
 )
 SELECT
-    g.idPerfilGuía AS idGuia,
-    CONCAT(u.nombreUsuario, ' ', u.apellidoUsuario) AS 'Nombre guía',
+    g.idPerfilGuÃ­a AS idGuia,
+    CONCAT(u.nombreUsuario, ' ', u.apellidoUsuario) AS 'Nombre guÃ­a',
     ISNULL(ct.totalTours, 0) AS 'Total tours'
-FROM Guías g
-JOIN Perfiles p ON g.idPerfilGuía = p.idPerfilUsuario
+FROM GuÃ­as g
+JOIN Perfiles p ON g.idPerfilGuÃ­a = p.idPerfilUsuario
 JOIN Usuarios u ON p.idPerfilUsuario = u.idUsuario
-LEFT JOIN ToursPorGuia ct ON g.idPerfilGuía = ct.idGuia
+LEFT JOIN ToursPorGuia ct ON g.idPerfilGuÃ­a = ct.idGuia
+
+GO
 
 -----------------9. Cantidad de idiomas manejados por los guias-------------
-CREATE VIEW CantidadIdiomasGuia AS
+CREATE OR ALTER VIEW CantidadIdiomasGuia AS
 SELECT 
-    g.idPerfilGuía AS idGuia,
-    CONCAT(u.nombreUsuario, ' ', u.apellidoUsuario) AS 'Nombre guía',
+    g.idPerfilGuÃ­a AS idGuia,
+    CONCAT(u.nombreUsuario, ' ', u.apellidoUsuario) AS 'Nombre guÃ­a',
     COUNT(ip.idIdioma) AS 'Cantidad de idiomas'
-FROM Guías g
-JOIN Perfiles p ON g.idPerfilGuía = p.idPerfilUsuario
+FROM GuÃ­as g
+JOIN Perfiles p ON g.idPerfilGuÃ­a = p.idPerfilUsuario
 JOIN Usuarios u ON p.idPerfilUsuario = u.idUsuario
 LEFT JOIN IdiomasPorPerfil ip ON p.idPerfilUsuario = ip.idPerfil
-GROUP BY g.idPerfilGuía, u.nombreUsuario, u.apellidoUsuario;
+GROUP BY g.idPerfilGuÃ­a, u.nombreUsuario, u.apellidoUsuario;
+
+GO
 
 ----------10. Servicios mas ofrecidos por los prestadores de servicio-------
-CREATE VIEW ServiciosMasOfrecidos AS
+CREATE OR ALTER VIEW ServiciosMasOfrecidos AS
 SELECT 
     s.idServicio,
     s.nombreServicio AS 'Nombre servicio',
@@ -164,10 +185,10 @@ LEFT JOIN ServiciosPorPrestador spp
     ON s.idServicio = spp.idServicio
 GROUP BY s.idServicio, s.nombreServicio
 
+GO
 
------11. medios de pagos más usados para dar propinas -----
-
-CREATE VIEW mediosDePagoMásUsados AS
+-----11. medios de pagos mÃ¡s usados para dar propinas -----
+CREATE OR ALTER VIEW mediosDePagoMÃ¡sUsados AS
 SELECT 
 	m.nombreMedioDePago AS 'Medio de pago',
 	COUNT(*) AS 'Cantidad de propinas'
@@ -175,17 +196,19 @@ FROM MediosDePago m
 JOIN Propinas p ON p.idMedioDePago = m.idMedioDePago
 GROUP BY m.nombreMedioDePago
 
+GO
 
 ------12. personas que sean guia y turista--------------
-
-CREATE VIEW personasQueSonGuiasYTuristas AS
+CREATE OR ALTER VIEW personasQueSonGuiasYTuristas AS
 SELECT 
-    u.nombreUsuario AS 'Nombre'
+    u.idUsuario,
+    CONCAT(u.nombreUsuario,' ',U.apellidoUsuario) AS 'Nombre completo',
+    u.documentoUsuario
 FROM Usuarios u
 WHERE u.idUsuario IN (
     SELECT p1.idPerfilUsuario
 	FROM Perfiles p1
-	JOIN Guías g ON g.idPerfilGuía = p1.idPerfilUsuario
+	JOIN GuÃ­as g ON g.idPerfilGuÃ­a = p1.idPerfilUsuario
 
 	INTERSECT
 
@@ -194,124 +217,128 @@ WHERE u.idUsuario IN (
 	JOIN Turistas t ON t.idPerfilTurista = p2.idPerfilUsuario
 );
 
+GO
 
---------13. los tours más largos en terminar -----------
-CREATE VIEW toursMasLargos AS
-SELECT 
+--------13. los tours mÃ¡s largos en terminar -----------
+CREATE OR ALTER VIEW toursMasLargos AS
+SELECT TOP 3
     nombreTour AS 'Nombre Tour', 
-    duraciónTour AS 'Duración Tour',
-    DENSE_RANK() OVER(ORDER BY duraciónTour DESC) AS 'Posición'
+    duraciÃ³nTour AS 'DuraciÃ³n Tour',
+    DENSE_RANK() OVER(ORDER BY duraciÃ³nTour DESC) AS 'PosiciÃ³n'
 FROM Tours;
 
+GO
 
 --------14. Datos de los usarios (EPS, # telefono y pais) ----
-CREATE VIEW vistaUsuarios AS
+CREATE OR ALTER VIEW vistaUsuarios AS
 SELECT
      u.nombreUsuario AS 'Nombre',  
      e.nombreEps AS 'EPS',
-     tt.nombreTipoTeléfono AS 'Tipo Teléfono',
-     t.númeroTeléfono AS 'Número Teléfono',
-     p.nombrePaís AS 'País'
+     tt.nombreTipoTelÃ©fono AS 'Tipo TelÃ©fono',
+     t.nÃºmeroTelÃ©fono AS 'NÃºmero TelÃ©fono',
+     p.nombrePaÃ­s AS 'PaÃ­s'
 FROM Usuarios u
 JOIN Eps e ON e.idEps = u.idEps
-JOIN TeléfonosUsuarios tu ON tu.idUsuario = u.idUsuario
-JOIN Teléfonos t ON t.idTeléfono = tu.idTeléfono
-JOIN TiposTeléfonos tt ON tt.idTipoTeléfono = t.idTipoTeléfono
-JOIN PaísesPorUsuarios pu ON pu.idUsuario = u.idUsuario
-JOIN Países p ON p.idPaís = pu.idPaís;
+JOIN TelÃ©fonosUsuarios tu ON tu.idUsuario = u.idUsuario
+JOIN TelÃ©fonos t ON t.idTelÃ©fono = tu.idTelÃ©fono
+JOIN TiposTelÃ©fonos tt ON tt.idTipoTelÃ©fono = t.idTipoTelÃ©fono
+JOIN PaÃ­sesPorUsuarios pu ON pu.idUsuario = u.idUsuario
+JOIN PaÃ­ses p ON p.idPaÃ­s = pu.idPaÃ­s;
 
+GO
 
-
---------15. Los departamentos con más perfiles ----------
-CREATE VIEW departamentosConMasPerfiles AS
+--------15. Los departamentos con mÃ¡s guÃ­as ----------
+CREATE OR ALTER VIEW departamentosConMasGuias AS
 SELECT 
 	d.idDepartamento,
     d.nombreDepartamento AS 'Nombre Departamento',
-    COUNT(p.idPerfilUsuario) AS 'Cantidad de Perfiles'
-FROM Departamentos d
-JOIN Sitios s ON s.idDepartamento = d.idDepartamento
-JOIN Guías g ON g.idSitioGuía= s.idSitio
-JOIN Perfiles p ON p.idPerfilUsuario = g.idPerfilGuía
+    COUNT(g.idPerfilGuÃ­a) AS 'Cantidad de usuarios'
+FROM GuÃ­as g 
+LEFT JOIN Sitios s ON g.idSitioGuÃ­a = s.idSitio
+LEFT JOIN Departamentos d ON s.idDepartamento = d.idDepartamento
+GROUP BY d.nombreDepartamento, d.idDepartamento
 
+GO
 
--------16. Los guías que tienen más de 3 temáticas preferidas ------
-CREATE VIEW guiasVersátiles AS
+-------16. Los guÃ­as que tienen mÃ¡s de 3 temÃ¡ticas preferidas ------
+CREATE OR ALTER VIEW guiasVersÃ¡tiles AS
 SELECT 
-	g.idPerfilGuía, 
+	g.idPerfilGuÃ­a, 
     u.idUsuario, 
-	CONCAT(u.nombreUsuario,' ', u.apellidoUsuario) AS 'Nombre Guía'
-FROM Guías g
-JOIN Perfiles p ON p.idPerfilUsuario = g.idPerfilGuía
+	CONCAT(u.nombreUsuario,' ', u.apellidoUsuario) AS 'Nombre GuÃ­a'
+FROM GuÃ­as g
+JOIN Perfiles p ON p.idPerfilUsuario = g.idPerfilGuÃ­a
 JOIN Usuarios u ON u.idUsuario = p.idPerfilUsuario
 WHERE (
         SELECT COUNT(*)
-        FROM TemáticasPreferidasPorGuía tg1
-        WHERE tg1.idGuía = g.idPerfilGuía
+        FROM TemÃ¡ticasPreferidasPorGuÃ­a tg1
+        WHERE tg1.idGuÃ­a = g.idPerfilGuÃ­a
       ) > 3
 
+GO
 
----------- 17. Sitios con menos de 3 reseñas ----------.
-CREATE VIEW PuntosPocoReseñados AS
+---------- 17. Puntos de interÃ©s con menos de 3 reseÃ±as ----------.
+CREATE OR ALTER VIEW PuntosPocoReseÃ±ados AS
 SELECT 
-    p.nombrePuntoDeInterés AS 'Nombre Punto',
-    COUNT(r.idReseña) AS 'Cantidad de Reseñas'
-FROM PuntosDeInterés p
-LEFT JOIN ReseñasDelPuntoTurístico rp ON rp.idPuntoTurístico = p.idPuntoDeInterés
-JOIN Reseñas r ON r.idReseña = rp.idReseñaPunto
-GROUP BY p.nombrePuntoDeInterés
-HAVING COUNT(r.idReseña) < 3
+     p.nombrePuntoDeInterÃ©s AS 'Nombre Punto',
+    COUNT(r.idReseÃ±a) AS 'Cantidad de ReseÃ±as'
+FROM PuntosDeInterÃ©s p
+JOIN ReseÃ±asDelPuntoTurÃ­stico rp ON rp.idPuntoTurÃ­stico = p.idPuntoDeInterÃ©s
+JOIN ReseÃ±as r ON r.idPerfil = rp.idReseÃ±aPunto
+GROUP BY p.nombrePuntoDeInterÃ©s
+HAVING COUNT(r.idReseÃ±a) < 3
 
+GO
 
-------- 18. Tours más antiguos ---------------
-CREATE VIEW AntiguedadDeTours AS
+------- 18. Tours mÃ¡s antiguos ---------------
+CREATE OR ALTER VIEW AntiguedadDeTours AS
 SELECT
     t.idTour,
     t.nombreTour AS 'Nombre Tour',
     MIN(ft.fecha) AS 'Primera fecha del tour',
-    DATEDIFF(DAY, MIN(ft.fecha), GETDATE()) AS 'Edad del tour en días'
+    ABS(DATEDIFF(DAY, MIN(ft.fecha), GETDATE())) AS 'Edad del tour en dÃ­as'
 
 FROM Tours t
 JOIN FechasPorTour fpt ON t.idTour = fpt.idTour
 JOIN FechasTour ft ON fpt.idFechaTour = ft.idFechaTour
 GROUP BY t.idTour, t.nombreTour
-ORDER BY 'Edad del tour en días' DESC
 
+GO
 
-
-
-------- 19. Ranking de guías con más propinas ---------
-CREATE VIEW RankingGuiasPorPropinas AS
+------- 19. Ranking de guÃ­as con mÃ¡s propinas ---------
+CREATE OR ALTER VIEW RankingGuiasPorPropinas AS
 SELECT 
-    CONCAT(u.nombreUsuario, ' ', u.apellidoUsuario) AS 'Nombre guía',
+    CONCAT(u.nombreUsuario, ' ', u.apellidoUsuario) AS 'Nombre guÃ­a',
     SUM(p.montoPropina) AS 'Propinas totales',
-    DENSE_RANK() OVER(ORDER BY SUM(p.montoPropina) DESC) AS 'Posición'
-FROM Guías g
-JOIN Perfiles pr ON g.idPerfilGuía = pr.idPerfilUsuario
+    DENSE_RANK() OVER(ORDER BY SUM(p.montoPropina) DESC) AS 'PosiciÃ³n'
+FROM GuÃ­as g
+JOIN Perfiles pr ON g.idPerfilGuÃ­a = pr.idPerfilUsuario
 JOIN Usuarios u ON pr.idPerfilUsuario = u.idUsuario
-JOIN Propinas p ON p.idGuía = g.idPerfilGuía
-GROUP BY g.idPerfilGuía, u.nombreUsuario, u.apellidoUsuario;
+JOIN Propinas p ON p.idGuÃ­a = g.idPerfilGuÃ­a
+GROUP BY g.idPerfilGuÃ­a, u.nombreUsuario, u.apellidoUsuario;
 
+GO
 
-------- 20. Duración de tours promedio por región ---------
-CREATE VIEW DuracionPromedioToursPorRegion AS
+------- 20. DuraciÃ³n de tours promedio por regiÃ³n ---------
+CREATE OR ALTER VIEW DuracionPromedioToursPorRegion AS
 WITH Duraciones AS (
     SELECT 
         t.idTour,
-        r.nombreRegión,
-        DATEDIFF(MINUTE, s.horaInicioSesión, s.horaFinSesión) AS DuracionMinutos
+        r.nombreRegiÃ³n,
+        DATEDIFF(MINUTE, s.horaInicioSesiÃ³n, s.horaFinSesiÃ³n) AS DuracionMinutos
     FROM Tours t
     JOIN FechasPorTour fpt ON t.idTour = fpt.idTour
     JOIN FechasTour ft ON fpt.idFechaTour = ft.idFechaTour
     JOIN SesionesTour s ON ft.idFechaTour = s.idFechaTour
     JOIN Sitios si ON t.idSitio = si.idSitio
     JOIN Departamentos d ON si.idDepartamento = d.idDepartamento
-    JOIN Regiones r ON d.idRegión = r.idRegión
+    JOIN Regiones r ON d.idRegiÃ³n = r.idRegiÃ³n
 )
 SELECT 
-    nombreRegión AS 'Región',
-    AVG(DuracionMinutos) AS 'Duración promedio (min)',
-    MAX(DuracionMinutos) AS 'Duración máxima (min)',
-    MIN(DuracionMinutos) AS 'Duración mínima (min)',
-    COUNT(DISTINCT idTour) AS 'Cantidad de tours'
+    nombreRegiÃ³n AS 'RegiÃ³n',
+    AVG(DuracionMinutos) AS 'DuraciÃ³n promedio (min)',
+    MAX(DuracionMinutos) AS 'DuraciÃ³n mÃ¡xima (min)',
+    MIN(DuracionMinutos) AS 'DuraciÃ³n mÃ­nima (min)',
+    COUNT(idTour) AS 'Cantidad de tours'
 FROM Duraciones
-GROUP BY nombreRegión;
+GROUP BY nombreRegiÃ³n;
