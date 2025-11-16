@@ -1,77 +1,107 @@
-INSERT INTO TiposDeLocalización (nombreTipoLocalización)
-VALUES ('Ciudad'), ('Pueblo'), ('Parque Natural'), ('Sitio Arqueológico');
-
-INSERT INTO Localizaciones (nombre, latitud, longitud, idTipoLocalización)
-VALUES 
-('Bogotá', 4.7110, -74.0721, 1),
-('Medellín', 6.2518, -75.5636, 1),
-('Villa de Leyva', 5.6340, -73.5233, 2),
-('Tayrona', 11.3000, -74.0833, 3);
-
-INSERT INTO PuntosDeInterés (nombre, descripción, latitud, longitud, tipos, serviciosYActividades, estado)
+USE freetour
+-- Datos de prueba
+INSERT INTO Países(nombrePaís, códigoIsoNúmerico, códigoIso3, códigoTeléfonico)
+VALUES ('Colombia', 123, 'COL', '+57');         
+INSERT INTO Eps(NITEps, nombreEps, direcciónEps, emailEps)
+VALUES (1232131, 'Sanitas', 'Cr 21 #20-25', 'sanitasEps@gmail.com');
+INSERT INTO Usuarios(nombreUsuario, apellidoUsuario, documentoUsuario, idEps)
+VALUES ('Santiago', 'Torres', '111111111', 1);
+INSERT INTO Roles(nombreRol)
+VALUES ('turista'), ('guía');
+INSERT INTO Perfiles(idPerfilUsuario, nombrePerfil, contraseñaPerfil, emailPerfil, idFotoDePerfil, idRol, fechaCreaciónPerfil)
 VALUES
-('Museo del Oro', 'Museo histórico con una amplia colección precolombina.', 4.5981, -74.0760, 'Cultural', 'Visitas guiadas', 'Activo'),
-('Parque Arví', 'Reserva ecológica con senderos naturales y actividades al aire libre.', 6.3106, -75.5080, 'Ecológico', 'Caminatas, picnic', 'Activo'),
-('Plaza Mayor de Villa de Leyva', 'Plaza central colonial rodeada de arquitectura tradicional.', 5.6345, -73.5237, 'Histórico', 'Turismo cultural', 'Activo');
-
-INSERT INTO Tours (temática, duración, nombre, idPuntoDeInterésInicial, disponibilidad, descripción, maxParticipantes, estáActivo, idLocalización)
+	(1, 'santielpro12' ,'asadasadsda','andrestofor@gmail.com', NULL, 1, GETDATE());
+INSERT INTO Turistas(idPerfilTurista)
+VALUES (1);
+INSERT INTO ValoresCalificación(rasgoCaracterístico, valorNumérico)
 VALUES
-('Historia Precolombina', 4.5, 'Tour Museo del Oro', 1, '2025-11-01 09:00:00', 'Recorrido guiado por el Museo del Oro.', 20, 1, 1),
-('Aventura Natural', 6.0, 'Senderismo en Arví', 2, '2025-11-02 08:00:00', 'Excursión por los senderos del Parque Arví.', 15, 1, 2),
-('Turismo Colonial', 3.0, 'Tour por Villa de Leyva', 3, '2025-11-03 10:00:00', 'Caminata guiada por la plaza mayor y calles históricas.', 25, 1, 3);
-
-
-INSERT INTO Usuarios (nombres, apellidos, teléfono, tieneEPS, documentoUsuario, idLocalización)
+	('Terrible', 0),
+	('Decepcionante', 1),
+	('Mejorable', 2),
+	('Bien', 3),
+	('Excelente', 4),
+	('Perfecto', 5);
+INSERT INTO TiposDeFormato(nombreTipoFormato)
+VALUES ('png'), ('jpeg'), ('jpg'), ('webt');
+INSERT INTO Regiones(nombreRegión, descripciónRegión, superficieRegión)
+VALUES ('Caribe', 'Se ubica al norte del país', 231888);
+INSERT INTO Departamentos (nombreDepartamento, descripciónDepartamento,  códigoDane, idRegión)
+VALUES ('Magdalena', 'Departamento más antigüo de Colombia', 2131231231, 1);
+INSERT INTO TiposDeLocalizaciones(nombreTipoLocalización)
+VALUES ('Universidad');
+INSERT INTO Sitios(idDepartamento, nombreSitio, latitudSitio, longitudSitio, idTipoLocalización)
+VALUES (1, 'Universidad del Magdalena', 11.13, -74.11, 1);
+INSERT INTO PuntosDeInterés(nombrePuntoDeInterés, latitudPuntoDeInterés, longitudPuntoDeInterés)
+VALUES ('Entrada campus', 11.13, -74.11);
+INSERT INTO Guías(idPerfilGuía, descripciónGuía, esVerificado, biografíaGuía, idSitioGuía)
+VALUES (1, 'Ama jugar al osu', 1, 'Nació en Santa Marta', 1);
+INSERT INTO Tours(nombreTour, idPuntoDeEncuentroTour, maxParticipantesTour, duraciónTour, descripciónTour, idGuíaPrincipalTour, idSitio)
+VALUES ('Tour unimag', 1, 30, 7.0, 'Un tour por el campus de la Universidad del Magdalena', 1, 1);
+INSERT INTO FechasTour(fecha) 
+VALUES ('2026-01-01');
+INSERT INTO FechasPorTour(idFechaTour, idTour)
+VALUES (1, 1);
+INSERT INTO SesionesTour(idFechaTour, horaInicioSesión, horaFinSesión)
+VALUES (1, '14:30', '21:30');
+INSERT INTO EstadosReserva(nombreEstado, descripciónEstado)
 VALUES
-('Carlos', 'Ramírez', '+57 3001234567', 1, '123456789', 1),
-('Laura', 'González', '+57 3117654321', 1, '987654321', 2),
-('Andrés', 'Martínez', '+57 3029988776', 0, '135792468', 3);
+	('Pendiente', 'Especifica si una reseña está pendiente por ser confirmada'),
+	('Confirmada', 'Indica que el cliente hará uso del servicio'),
+	('Cancelada', 'La reserva fue cancelada'),
+	('Finalizada', 'El cliente hizo uso de la reserva'),
+	('Expirada', 'El cliente no hizo uso de la reserva y ya pasó la fecha'),
+	('En curso', 'El cliente está haciendo uso de la reserva en este instante');
+INSERT INTO TiposTeléfonos(nombreTipoTeléfono)
+VALUES ('iPhone');
+
+-- IMPORTANTE: estas inserciones requieren de haber ejecutado con anterioridad 
+-- el script de creación de los procedimientos
+DECLARE @idReseñaRegistrada INT;
+EXEC registrarReseña
+	'El guía que me atendió fue terrible',
+	1,
+	0,
+	@idReseña = @idReseñaRegistrada OUT
 
 
-INSERT INTO Idiomas (nombre)
-VALUES ('Español'), ('Inglés'), ('Francés');
+EXEC registrarReseña
+	'La comida es excelente',
+	1,
+	5,
+	@idReseña = @idReseñaRegistrada
 
 
-INSERT INTO Perfiles (idPerfil, fotoDePerfil, email, fechaCreación, idIdioma)
-VALUES
-(1, 'carlos.jpg', 'carlos@example.com', '2024-12-01', 1),
-(2, 'laura.png', 'laura@example.com', '2025-01-15', 2),
-(3, 'andres.jpeg', 'andres@example.com', '2025-02-10', 1);
+DECLARE @idDetalleReseñaGenerado INT;
+EXEC añadirDetalleReseña
+	@idReseña = 1,
+	@detalle = 'servicio al cliente',
+	@valorCalificación = 2,
+	@idDetalleReseña = @idDetalleReseñaGenerado;
 
+EXEC añadirDetalleReseña
+	@idReseña = 2,
+	@detalle = 'servicio al cliente',
+	@valorCalificación = 4,
+	@idDetalleReseña = @idDetalleReseñaGenerado;
 
-INSERT INTO Guías (idGuía, esVerificado, biografía, descripción)
-VALUES
-(1, 1, 'Guía con experiencia en historia y arqueología.', 'Especialista en tours culturales e históricos.'),
-(2, 0, 'Apasionada por la naturaleza y los deportes al aire libre.', 'Guía de senderismo y actividades ecológicas.');
+EXEC registrarUsuarioTuristaGuía
+	'Samuel', 'Polo', 'Polo777', '123456', '2222221222', 'Sanitas', 'pololo@gmail.com', 'shrek_musculoso', 1.2, 'png', 'Guía', 1,
+	 'Nací en Santa Marta, estudié ingeniería de sistemas y terminé siendo asesor turistico', 'sabe inglés', 'Universidad del Magdalena'
 
+EXEC reservar 
+	'santielpro12',
+	12,
+	1
 
-INSERT INTO Turistas (idTurista)
-VALUES (3);
+DECLARE @idTel INT;
+EXEC registrarTeléfono
+    @númeroTeléfono = '+57 3123456789',
+    @idTipoTeléfono = 1,
+    @idPaís = 1,
+    @idUsuario = 1,
+    @idTeléfono = @idTel OUT;
 
-
-INSERT INTO PuntosDeInterésDelTour (idTour, idPuntoDeInterés)
-VALUES
-(1, 1),
-(2, 2),
-(3, 3);
-
-
-INSERT INTO IdiomasPorPerfil (idIdioma, idPerfil)
-VALUES
-(1, 1),
-(2, 2),
-(1, 3);
-
-
-INSERT INTO IdiomasPorTour (idIdioma, idTour)
-VALUES
-(1, 1),
-(2, 1),
-(1, 2),
-(3, 3);
-
-
-INSERT INTO Reservas (cuposReservados, estadoReserva, idTuristaReserva, idTour)
-VALUES
-(2, 'Confirmada', 3, 1),
-(1, 'Pendiente', 3, 2);
+EXEC cambiarEstadoReserva
+	1,
+	'Cancelada',
+	'El cliente no llegó al punto de encuentro'
