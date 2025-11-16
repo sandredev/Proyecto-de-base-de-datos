@@ -1,6 +1,6 @@
 USE Freetour;
 GO
--- Registra una reseña en la base de datos.
+-- Procedimiento 1: registra una reseña en la base de datos.
 CREATE OR ALTER PROCEDURE registrarReseña
 	@comentarioReseña VARCHAR(500),
 	@idUsuario INT,
@@ -40,7 +40,7 @@ BEGIN
 	END;
 END;
 GO
--- Añade detalles a una reseña ya registrada.
+-- Procedimiento 2: añade detalles a una reseña ya registrada.
 CREATE OR ALTER PROCEDURE añadirDetalleReseña
 	@idReseña INT,
 	@detalle VARCHAR(50),
@@ -87,6 +87,7 @@ BEGIN
 	END;
 END;
 GO
+-- Procedimiento 3: registra a un usuario que es guía
 CREATE OR ALTER PROCEDURE registrarUsuarioGuía
 	@nombreUsuario VARCHAR(50),
 	@apellidoUsuario VARCHAR(50),
@@ -104,6 +105,7 @@ CREATE OR ALTER PROCEDURE registrarUsuarioGuía
 	@sitioPreferido VARCHAR(100)
 AS
 BEGIN
+	SET NOCOUNT ON;
 	DECLARE @idUsuario INT;
 	DECLARE @idRol INT;
 	DECLARE @idFotoDePerfil INT;
@@ -149,7 +151,7 @@ BEGIN
 		(@idUsuario, @esVerificado, @biografíaGuía, @descripciónGuía, @idSitioPreferidoPorElGuía)
 END;
 GO
--- Registra a un usuario si solo es turista
+-- Procedimiento 4: registra a un usuario si solo es turista
 CREATE OR ALTER PROCEDURE registrarUsuarioTurista
 	@nombreUsuario VARCHAR(50),
 	@apellidoUsuario VARCHAR(50),
@@ -205,7 +207,7 @@ BEGIN
 		(@idUsuario);
 END;
 GO
--- Registra a un usuario si tiene ambos roles (guía y turista)
+-- Procedimiento 5: registra a un usuario si tiene ambos roles (guía y turista)
 CREATE OR ALTER PROCEDURE registrarUsuarioTuristaGuía
 	@nombreUsuario VARCHAR(50),
 	@apellidoUsuario VARCHAR(50),
@@ -272,7 +274,7 @@ BEGIN
 		(@idUsuario, @esVerificado, @biografíaGuía, @descripciónGuía, @idSitioPreferidoPorElGuía);
 END;
 GO
--- Actualiza la contraseña de un usuario solo si se ingresa la antigua contraseña adecuadamente
+-- Procedimiento 6: actualiza la contraseña de un usuario solo si se ingresa la antigua contraseña adecuadamente
 -- (para implementar la función de cambio de contraseña en el sistema)
 CREATE OR ALTER PROCEDURE actualizarContraseña 
 	@nombrePerfil VARCHAR(50),
@@ -304,6 +306,7 @@ BEGIN
 	END;
 END; 
 GO
+-- Procedimiento 7: registra una reserva en la base de datos
 CREATE OR ALTER PROCEDURE reservar
 	@nombrePerfilQueReserva VARCHAR(50),
 	@cuposReservados INT,
@@ -353,8 +356,8 @@ BEGIN
 		VALUES (SCOPE_IDENTITY(), @idEstadoConfirmado, @ahora);
 	END;
 END;
-
 GO
+-- Procedimiento 8: cambia el estado de una reserva
 CREATE OR ALTER PROCEDURE cambiarEstadoReserva
 	@idReserva INT,
 	@nuevoEstado VARCHAR(20),
@@ -374,7 +377,7 @@ BEGIN
 END
 
 GO
--- Registra un teléfono en la base de datos
+-- Procedimiento 9: registra un teléfono en la base de datos
 CREATE OR ALTER PROCEDURE registrarTeléfono
     @númeroTeléfono VARCHAR(20),
     @observacionesTeléfono VARCHAR(500) = NULL,
@@ -444,4 +447,25 @@ BEGIN
     END;
 END;
 GO
-
+-- Procedimiento 10: sube un archivo multimedia en un tipo de formato especificado.
+-- Si el formato no existe, lo añade a la base de datos.
+CREATE OR ALTER PROCEDURE subirArchivoMultimedia
+	@nombreArchivo VARCHAR(50),
+	@pesoEnMB DECIMAL(9, 2),
+	@tipoFormato VARCHAR(30)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	DECLARE @idTipoFormato INT;
+	SELECT @idTipoFormato = idTipoFormato
+	FROM TiposDeFormato
+	WHERE nombreTipoFormato = @tipoFormato;
+	IF @idTipoFormato IS NULL
+	BEGIN	
+		INSERT INTO TiposDeFormato(nombreTipoFormato)
+		VALUES (@tipoFormato)
+		SET @idTipoFormato = SCOPE_IDENTITY()
+	END;
+	INSERT INTO ArchivosMultimedia(nombreArchivoMultimedia, pesoEnMB, idTipoFormato)
+	VALUES (@nombreArchivo, @pesoEnMB, @idTipoFormato);
+END;

@@ -23,7 +23,7 @@ LEFT JOIN Departamentos d ON s.idDepartamento = d.idDepartamento
 LEFT JOIN Regiones r ON d.idRegión = r.idRegión
 LEFT JOIN FechasPorTour fpt ON t.idTour = fpt.idTour
 LEFT JOIN FechasTour f ON fpt.idFechaTour = f.idFechaTour
-WHERE E.nombreEstado = 'disponible';
+WHERE E.nombreEstado = 'Disponible';
 
 
 --------2. Reservas activas--------------
@@ -43,7 +43,7 @@ LEFT JOIN EstadosReserva er ON epr.idEstado = er.idEstadoReserva
 JOIN Turistas tu ON r.idTurista = tu.idPerfilTurista
 JOIN Perfiles pe ON tu.idPerfilTurista = pe.idPerfilUsuario
 JOIN Usuarios u ON pe.idPerfilUsuario = u.idUsuario
-WHERE er.nombreEstado IN ('pendiente', 'confirmada', 'en curso');
+WHERE er.nombreEstado IN ('Pendiente', 'Confirmada', 'En curso');
 
 --------------------3. Reservas por usuario-------------------------
 CREATE VIEW ReservaPorUsuario AS
@@ -70,7 +70,7 @@ CREATE VIEW DuracionSesiones AS
 SELECT 
     s.idSesiónTour,
     t.nombreTour AS 'Nombre Tour',
-    DATEDIFF(MINUTE, s.horaInicioSesión, s.horaFinSesión) / 60.0 AS 'Duración en horas'
+    CAST(DATEDIFF(MINUTE, s.horaInicioSesión, s.horaFinSesión) / 60.0 AS DECIMAL(10,2)) AS 'Duración en horas'
 FROM SesionesTour s
 JOIN FechasTour ft ON s.idFechaTour = ft.idFechaTour
 JOIN FechasPorTour fpt ON ft.idFechaTour = fpt.idFechaTour
@@ -140,7 +140,6 @@ FROM Guías g
 JOIN Perfiles p ON g.idPerfilGuía = p.idPerfilUsuario
 JOIN Usuarios u ON p.idPerfilUsuario = u.idUsuario
 LEFT JOIN ToursPorGuia ct ON g.idPerfilGuía = ct.idGuia
-ORDER BY totalTours DESC;
 
 -----------------9. Cantidad de idiomas manejados por los guias-------------
 CREATE VIEW CantidadIdiomasGuia AS
@@ -164,7 +163,6 @@ FROM Servicios s
 LEFT JOIN ServiciosPorPrestador spp
     ON s.idServicio = spp.idServicio
 GROUP BY s.idServicio, s.nombreServicio
-ORDER BY 'Cantidad de prestadores' DESC;
 
 
 -----11. medios de pagos más usados para dar propinas -----
@@ -176,7 +174,7 @@ SELECT
 FROM MediosDePago m
 JOIN Propinas p ON p.idMedioDePago = m.idMedioDePago
 GROUP BY m.nombreMedioDePago
-ORDER BY COUNT(*) DESC
+
 
 ------12. personas que sean guia y turista--------------
 
@@ -253,18 +251,15 @@ WHERE (
 
 
 ---------- 17. Sitios con menos de 3 reseñas ----------.
-CREATE VIEW SitiosSinReseñar AS
+CREATE VIEW PuntosPocoReseñados AS
 SELECT 
-    s.nombreSitio AS 'Nombre Sitio',
-    s.longitudSitio AS 'Longitud',
+    p.nombrePuntoDeInterés AS 'Nombre Punto',
     COUNT(r.idReseña) AS 'Cantidad de Reseñas'
-FROM Sitios s
-JOIN Guías g ON g.idSitioGuía = s.idSitio
-JOIN ReseñasDelGuía rg ON rg.idReseñaGuía = g.idPerfilGuía
-JOIN Reseñas r ON r.idReseña = rg.idGuíaReseñado
+FROM PuntosDeInterés p
+LEFT JOIN ReseñasDelPuntoTurístico rp ON rp.idPuntoTurístico = p.idPuntoDeInterés
+JOIN Reseñas r ON r.idReseña = rp.idReseñaPunto
+GROUP BY p.nombrePuntoDeInterés
 HAVING COUNT(r.idReseña) < 3
-ORDER BY 'Cantidad de Reseñas' ASC;
-
 
 
 ------- 18. Tours más antiguos ---------------
@@ -295,7 +290,6 @@ JOIN Perfiles pr ON g.idPerfilGuía = pr.idPerfilUsuario
 JOIN Usuarios u ON pr.idPerfilUsuario = u.idUsuario
 JOIN Propinas p ON p.idGuía = g.idPerfilGuía
 GROUP BY g.idPerfilGuía, u.nombreUsuario, u.apellidoUsuario;
-
 
 
 ------- 20. Duración de tours promedio por región ---------
