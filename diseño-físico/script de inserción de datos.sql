@@ -101,6 +101,11 @@ EXEC registrarTeléfono
     @idUsuario = 1,
     @idTeléfono = @idTel OUT;
 
+-- Hay un ligero problema con el GETDATE() si ejecutas este procedimiento al mismo tiempo
+-- que el procedimiento reservar. Parece ser que SQL Server no puede garantizar que se ejecuten
+-- en orden de llamada, lo que produce un conflicto con la CONSTRAINT fechaInicioEstado <= GETDATE().
+-- Ejecutar este procedimiento después de ejecutar reserva en ejecuciones distintas solucionará el problema.
+-- No profundicé en este error porque no logro concebir una situación en la que 
 EXEC cambiarEstadoReserva
 	1,
 	'Cancelada',
