@@ -3,120 +3,120 @@ GO
 SET NOCOUNT ON;
 
 --------------------------------------------------------------------------------
--- BASES / CAT¡LOGOS SIMPLES
+-- BASES / CAT√ÅLOGOS SIMPLES
 --------------------------------------------------------------------------------
 
 -- Regiones
-INSERT INTO Regiones (nombreRegiÛn, descripciÛnRegiÛn, superficieRegiÛn) VALUES
-('Andina','Zona montaÒosa central del paÌs',250000.00),
-('Caribe','Costa norte con climas c·lidos',70000.50),
-('PacÌfica','Costa pacÌfica y selva cercana',90000.00),
-('OrinoquÌa','Llanuras orientales',150000.00);
+INSERT INTO Regiones (nombreRegi√≥n, descripci√≥nRegi√≥n, superficieRegi√≥n) VALUES
+('Andina','Zona monta√±osa central del pa√≠s',250000.00),
+('Caribe','Costa norte con climas c√°lidos',70000.50),
+('Pac√≠fica','Costa pac√≠fica y selva cercana',90000.00),
+('Orinoqu√≠a','Llanuras orientales',150000.00);
 
--- PaÌses
-INSERT INTO PaÌses (nombrePaÌs, cÛdigoIsoN˙merico, cÛdigoIso3, cÛdigoTelÈfonico) VALUES
+-- Pa√≠ses
+INSERT INTO Pa√≠ses (nombrePa√≠s, c√≥digoIsoN√∫merico, c√≥digoIso3, c√≥digoTel√©fonico) VALUES
 ('Colombia',170,'COL','+57'),
 ('Estados Unidos',840,'USA','+1');
 
 -- Monedas
-INSERT INTO Monedas (nombreMoneda, cÛdigoIsoMoneda, sÌmboloMoneda) VALUES
+INSERT INTO Monedas (nombreMoneda, c√≥digoIsoMoneda, s√≠mboloMoneda) VALUES
 ('Peso colombiano','COP','$'),
-('DÛlar estadounidense','USD','US$');
+('D√≥lar estadounidense','USD','US$');
 
 -- TiposDeLocalizaciones
-INSERT INTO TiposDeLocalizaciones (nombreTipoLocalizaciÛn, descripciÛnTipoLocalizaciÛn) VALUES
-('Parque','¡reas abiertas de recreaciÛn'),
+INSERT INTO TiposDeLocalizaciones (nombreTipoLocalizaci√≥n, descripci√≥nTipoLocalizaci√≥n) VALUES
+('Parque','√Åreas abiertas de recreaci√≥n'),
 ('Museo','Lugares culturales con colecciones'),
 ('Playa','Ubicaciones costeras'),
-('Monumento','Lugares histÛricos o esculturas');
+('Monumento','Lugares hist√≥ricos o esculturas');
 
 -- TiposDeFormato
-INSERT INTO TiposDeFormato (nombreTipoFormato, descripciÛnTipoFormato) VALUES
+INSERT INTO TiposDeFormato (nombreTipoFormato, descripci√≥nTipoFormato) VALUES
 ('Imagen','Formato de imagen (jpg, png)'),
-('Video','Formato de vÌdeo (mp4)'),
+('Video','Formato de v√≠deo (mp4)'),
 ('Documento','PDF o similar');
 
--- TiposTelÈfonos
-INSERT INTO TiposTelÈfonos (nombreTipoTelÈfono, descripciÛnTipoTelÈfono) VALUES
-('MÛvil','TelÈfono celular'),
-('Fijo','LÌnea fija'),
-('Trabajo','TelÈfono laboral');
+-- TiposTel√©fonos
+INSERT INTO TiposTel√©fonos (nombreTipoTel√©fono, descripci√≥nTipoTel√©fono) VALUES
+('M√≥vil','Tel√©fono celular'),
+('Fijo','L√≠nea fija'),
+('Trabajo','Tel√©fono laboral');
 
 -- TiposPrestadoresDeServicios
-INSERT INTO TiposPrestadoresDeServicios (nombreTipoPrestador, descripciÛnTipoPrestador) VALUES
+INSERT INTO TiposPrestadoresDeServicios (nombreTipoPrestador, descripci√≥nTipoPrestador) VALUES
 ('Transporte','Servicios de transporte'),
-('AlimentaciÛn','RestauraciÛn'),
+('Alimentaci√≥n','Restauraci√≥n'),
 ('Operador Aventura','Actividades de aventura');
 
 -- RangosEdades
-INSERT INTO RangosEdades (nombreRangoEdad, descripciÛnRangoEdad) VALUES
+INSERT INTO RangosEdades (nombreRangoEdad, descripci√≥nRangoEdad) VALUES
 ('Para toda la familia','Apto para todas las edades'),
-('Para mayores de 10','NiÒos menores de 10 no recomendados'),
+('Para mayores de 10','Ni√±os menores de 10 no recomendados'),
 ('Para mayores de 12','Actividad con algo de esfuerzo'),
 ('Para mayores de 17','Requiere responsabilidad'),
 ('Solo adultos','18+');
 
 -- Roles
-INSERT INTO Roles (nombreRol) VALUES ('GuÌa'),('Turista');
+INSERT INTO Roles (nombreRol) VALUES ('Gu√≠a'),('Turista');
 
--- ValoresCalificaciÛn
-INSERT INTO ValoresCalificaciÛn (rasgoCaracterÌstico, valorNumÈrico) VALUES
+-- ValoresCalificaci√≥n
+INSERT INTO ValoresCalificaci√≥n (rasgoCaracter√≠stico, valorNum√©rico) VALUES
 ('Deficiente',1),('Regular',2),('Bueno',3),('Muy bueno',4),('Excelente',5);
 
 -- DetallesAdicionales
-INSERT INTO DetallesAdicionales (nombreDetalle, descripciÛnDetalle) VALUES
+INSERT INTO DetallesAdicionales (nombreDetalle, descripci√≥nDetalle) VALUES
 ('Accesibilidad','Rutas accesibles para sillas de ruedas'),
 ('Mascotas','Se permiten mascotas con correa'),
-('GuÌa biling¸e','GuÌa que habla inglÈs');
+('Gu√≠a biling√ºe','Gu√≠a que habla ingl√©s');
 
 -- Estados (generales)
-INSERT INTO Estados (nombreEstado, descripciÛnEstado) VALUES
+INSERT INTO Estados (nombreEstado, descripci√≥nEstado) VALUES
 ('Operativo','Disponible para visitas'),
 ('Mantenimiento','Temporalmente en mantenimiento'),
 ('Cerrado','Cerrado permanentemente o temporalmente');
 
 -- Climas
-INSERT INTO Climas (nombreClima, descripciÛnClima, temperaturaPromedioClima, humedadPromedioClima) VALUES
-('Ecuatorial','Clima h˙medo y caliente',27.50,85.00),
-('Templado','Clima templado de montaÒa',15.00,70.00),
+INSERT INTO Climas (nombreClima, descripci√≥nClima, temperaturaPromedioClima, humedadPromedioClima) VALUES
+('Ecuatorial','Clima h√∫medo y caliente',27.50,85.00),
+('Templado','Clima templado de monta√±a',15.00,70.00),
 ('Seco','Zonas con menor humedad',28.00,50.00);
 
 --------------------------------------------------------------------------------
 -- DEPARTAMENTOS (requieren Regiones)
 --------------------------------------------------------------------------------
-INSERT INTO Departamentos (nombreDepartamento, descripciÛnDepartamento, cÛdigoDane, idRegiÛn) VALUES
-('Cundinamarca','Departamento central donde est· Bogot·',25,1),
-('Antioquia','RegiÛn andina con MedellÌn',5,1),
-('Atl·ntico','Costa Caribe con Barranquilla',8,2),
-('BolÌvar','Cartagena y zona caribe',13,2),
-('ChocÛ','RegiÛn pacÌfica',27,3),
-('Meta','OrinoquÌa con Villavicencio',50,4),
+INSERT INTO Departamentos (nombreDepartamento, descripci√≥nDepartamento, c√≥digoDane, idRegi√≥n) VALUES
+('Cundinamarca','Departamento central donde est√° Bogot√°',25,1),
+('Antioquia','Regi√≥n andina con Medell√≠n',5,1),
+('Atl√°ntico','Costa Caribe con Barranquilla',8,2),
+('Bol√≠var','Cartagena y zona caribe',13,2),
+('Choc√≥','Regi√≥n pac√≠fica',27,3),
+('Meta','Orinoqu√≠a con Villavicencio',50,4),
 ('Risaralda','Eje cafetero',66,1),
 ('Valle del Cauca','Cali y sus valles',76,1),
-('NariÒo','Suroccidente, costa pacÌfica',52,3),
-('Boyac·','Zona andina',15,1);
+('Nari√±o','Suroccidente, costa pac√≠fica',52,3),
+('Boyac√°','Zona andina',15,1);
 
 --------------------------------------------------------------------------------
 -- SITIOS (requieren TiposDeLocalizaciones, Departamentos)
 --------------------------------------------------------------------------------
-INSERT INTO Sitios (nombreSitio, latitudSitio, longitudSitio, idTipoLocalizaciÛn, idDepartamento) VALUES
-('Centro HistÛrico', 4.711111, -74.071111, 4, 1),
+INSERT INTO Sitios (nombreSitio, latitudSitio, longitudSitio, idTipoLocalizaci√≥n, idDepartamento) VALUES
+('Centro Hist√≥rico', 4.711111, -74.071111, 4, 1),
 ('Parque Nacional', 5.054000, -75.520000, 1, 7),
 ('Playa Central', 10.988000, -74.804000, 3, 3),
 ('Museo Central', 4.712000, -74.070500, 2, 1),
 ('Reserva Bosque', 3.200500, -76.520500, 1, 5),
 ('Mirador del Valle', 6.259000, -75.561000, 1, 2),
-('Zona GastronÛmica', 4.715500, -74.073500, 4, 1),
-('Pueblo HistÛrico', 6.265000, -75.565000, 4, 2),
+('Zona Gastron√≥mica', 4.715500, -74.073500, 4, 1),
+('Pueblo Hist√≥rico', 6.265000, -75.565000, 4, 2),
 ('Sendero Natural', 5.060000, -75.525000, 1, 7),
 ('Playa Sur', 2.450000, -78.900000, 3, 9),
 ('Centro Cultural', 4.730500, -74.049500, 2, 1),
-('EstaciÛn Mirador', 6.261000, -75.562000, 1, 2);
+('Estaci√≥n Mirador', 6.261000, -75.562000, 1, 2);
 
 --------------------------------------------------------------------------------
 -- EPS
 --------------------------------------------------------------------------------
-INSERT INTO Eps (NITEps, nombreEps, direcciÛnEps, emailEps) VALUES
+INSERT INTO Eps (NITEps, nombreEps, direcci√≥nEps, emailEps) VALUES
 ('900123456-1','SaludTotal','Calle 10 #20-30','contacto@saludtotal.com'),
 ('800654321-2','Nueva EPS','Avenida 5 #40-10','info@nuevaeps.com.co'),
 ('900000111-3','EPSEjemplo','Carrera 7 #50-20','servicios@epsejemplo.co');
@@ -125,26 +125,26 @@ INSERT INTO Eps (NITEps, nombreEps, direcciÛnEps, emailEps) VALUES
 -- USUARIOS
 --------------------------------------------------------------------------------
 INSERT INTO Usuarios (nombreUsuario, apellidoUsuario, documentoUsuario, idEps) VALUES
-('AndrÈs','GÛmez','CC100000001',1),
-('MarÌa','PÈrez','CC100000002',2),
-('Juan','RodrÌguez','CC100000003',1),
-('Laura','MartÌnez','CC100000004',3),
+('Andr√©s','G√≥mez','CC100000001',1),
+('Mar√≠a','P√©rez','CC100000002',2),
+('Juan','Rodr√≠guez','CC100000003',1),
+('Laura','Mart√≠nez','CC100000004',3),
 ('Diego','Santos','CC100000005',1),
 ('Catalina','Ruiz','CC100000006',2),
 ('Santiago','Vargas','CC100000007',1),
-('Ana','LÛpez','CC100000008',2),
-('Miguel','C·rdenas','CC100000009',1),
-('LucÌa','Castro','CC100000010',3),
-('Pedro','MejÌa','CC100000011',1),
-('Valentina','RÌos','CC100000012',2),
+('Ana','L√≥pez','CC100000008',2),
+('Miguel','C√°rdenas','CC100000009',1),
+('Luc√≠a','Castro','CC100000010',3),
+('Pedro','Mej√≠a','CC100000011',1),
+('Valentina','R√≠os','CC100000012',2),
 ('Camilo','Ortiz','CC100000013',1),
 ('Paula','Herrera','CC100000014',2),
-('Esteban','RuÌz','CC100000015',3);
+('Esteban','Ru√≠z','CC100000015',3);
 
 --------------------------------------------------------------------------------
 -- PERFILES (usa ids de Usuarios ya insertados: idPerfilUsuario coincide con idUsuario)
 --------------------------------------------------------------------------------
-INSERT INTO Perfiles (idPerfilUsuario, nombrePerfil, contraseÒaPerfil, emailPerfil, idFotoDePerfil, idRol, fechaCreaciÛnPerfil)
+INSERT INTO Perfiles (idPerfilUsuario, nombrePerfil, contrase√±aPerfil, emailPerfil, idFotoDePerfil, idRol, fechaCreaci√≥nPerfil)
 VALUES
 (1,'andres_g','Pwd12345','andres.g@example.com',NULL,2,'2024-08-01'),
 (2,'maria_p','Pwd12345','maria.p@example.com',NULL,2,'2024-09-12'),
@@ -168,30 +168,30 @@ VALUES
 INSERT INTO Turistas (idPerfilTurista) VALUES (1),(2),(3),(4),(5),(6),(7),(8),(9),(10);
 
 --------------------------------------------------------------------------------
--- GUÕAS (perfiles 11..15)
+-- GU√çAS (perfiles 11..15)
 --------------------------------------------------------------------------------
-INSERT INTO GuÌas (idPerfilGuÌa, esVerificado, biografÌaGuÌa, descripciÛnGuÌa, idSitioGuÌa) VALUES
-(1,1,'GuÌa certificado con 3 aÒos de experiencia','Especializado en rutas urbanas',6),
-(11,1,'GuÌa local certificado con 8 aÒos de experiencia','Especializado en rutas histÛricas',4),
-(12,0,'GuÌa naturalista y fotÛgrafo','Rutas de naturaleza y observaciÛn de aves',5),
-(13,1,'GuÌa biling¸e (es/en)','Tours culturales y gastronÛmicos',11),
-(14,0,'GuÌa con experiencia en turismo joven','Rutas urbanas y nocturnas',6),
-(15,0,'GuÌa ocasional','Apoya en eventos puntuales',1);
+INSERT INTO Gu√≠as (idPerfilGu√≠a, esVerificado, biograf√≠aGu√≠a, descripci√≥nGu√≠a, idSitioGu√≠a) VALUES
+(1,1,'Gu√≠a certificado con 3 a√±os de experiencia','Especializado en rutas urbanas',6),
+(11,1,'Gu√≠a local certificado con 8 a√±os de experiencia','Especializado en rutas hist√≥ricas',4),
+(12,0,'Gu√≠a naturalista y fot√≥grafo','Rutas de naturaleza y observaci√≥n de aves',5),
+(13,1,'Gu√≠a biling√ºe (es/en)','Tours culturales y gastron√≥micos',11),
+(14,0,'Gu√≠a con experiencia en turismo joven','Rutas urbanas y nocturnas',6),
+(15,0,'Gu√≠a ocasional','Apoya en eventos puntuales',1);
 
 --------------------------------------------------------------------------------
 -- IDIOMAS
 --------------------------------------------------------------------------------
-INSERT INTO Idiomas (nombreIdioma, descripciÛnIdioma) VALUES
-('EspaÒol','Idioma principal en Colombia'),
-('InglÈs','Idioma internacional'),
-('PortuguÈs','Idioma fronterizo en algunos sitios');
+INSERT INTO Idiomas (nombreIdioma, descripci√≥nIdioma) VALUES
+('Espa√±ol','Idioma principal en Colombia'),
+('Ingl√©s','Idioma internacional'),
+('Portugu√©s','Idioma fronterizo en algunos sitios');
 
 -- IdiomasPorPerfil (asignaciones)
 INSERT INTO IdiomasPorPerfil (idIdioma, idPerfil) VALUES
 (1,11),(2,11),(1,12),(1,13),(2,13),(1,14),(1,15);
 
 --------------------------------------------------------------------------------
--- TiposDeFormato y ArchivosMultimedia (archivos usados en perfiles/reseÒas)
+-- TiposDeFormato y ArchivosMultimedia (archivos usados en perfiles/rese√±as)
 --------------------------------------------------------------------------------
 INSERT INTO ArchivosMultimedia (nombreArchivoMultimedia, pesoEnMB, idTipoFormato) VALUES
 ('foto_perfil_1.jpg',0.45,1),
@@ -205,54 +205,54 @@ INSERT INTO ArchivosMultimedia (nombreArchivoMultimedia, pesoEnMB, idTipoFormato
 UPDATE Perfiles SET idFotoDePerfil = 1 WHERE idPerfilUsuario = 1;
 
 --------------------------------------------------------------------------------
--- TEM¡TICAS
+-- TEM√ÅTICAS
 --------------------------------------------------------------------------------
-INSERT INTO Tem·ticas (nombreTem·tica, descripciÛnTem·tica, idRangoEdadRecomendada) VALUES
+INSERT INTO Tem√°ticas (nombreTem√°tica, descripci√≥nTem√°tica, idRangoEdadRecomendada) VALUES
 ('Historia','Tours sobre el pasado y patrimonio',1),
-('Naturaleza','ObservaciÛn y senderismo',1),
-('GastronomÌa','Rutas culinarias',1),
+('Naturaleza','Observaci√≥n y senderismo',1),
+('Gastronom√≠a','Rutas culinarias',1),
 ('Aventura','Actividades de aventura',3),
 ('Nocturno','Rutas y eventos nocturnos',4),
-('FotografÌa','Rutas para fotografÌa',1);
+('Fotograf√≠a','Rutas para fotograf√≠a',1);
 
 --------------------------------------------------------------------------------
--- PUNTOS DE INTER…S
+-- PUNTOS DE INTER√âS
 --------------------------------------------------------------------------------
-INSERT INTO PuntosDeInterÈs (nombrePuntoDeInterÈs, descripcionPuntoDeInterÈs, latitudPuntoDeInterÈs, longitudPuntoDeInterÈs) VALUES
-('Plaza Mayor','Plaza histÛrica del centro',4.710988,-74.072090),
-('Museo Colonial','ColecciÛn de objetos coloniales',4.711000,-74.070000),
-('Parque Central','Parque urbano con vegetaciÛn',4.720000,-74.080000),
+INSERT INTO PuntosDeInter√©s (nombrePuntoDeInter√©s, descripcionPuntoDeInter√©s, latitudPuntoDeInter√©s, longitudPuntoDeInter√©s) VALUES
+('Plaza Mayor','Plaza hist√≥rica del centro',4.710988,-74.072090),
+('Museo Colonial','Colecci√≥n de objetos coloniales',4.711000,-74.070000),
+('Parque Central','Parque urbano con vegetaci√≥n',4.720000,-74.080000),
 ('Playa Azul','Playa con oleaje moderado',10.990000,-74.800000),
-('Mirador Verde','Mirador con vista panor·mica',6.250000,-75.570000),
-('Bosque Andino','¡rea protegida para senderismo',5.050000,-75.520000),
+('Mirador Verde','Mirador con vista panor√°mica',6.250000,-75.570000),
+('Bosque Andino','√Årea protegida para senderismo',5.050000,-75.520000),
 ('Cascada Escondida','Cascada en zona de selva',3.200000,-76.520000),
 ('Museo de Arte','Colecciones modernas',6.266667,-75.567778),
 ('Plaza del Mar','Plaza frente al mar',10.987000,-74.805000),
-('Ruta GastronÛmica','Zona con restaurantes locales',4.715000,-74.073000),
-('Piedra HistÛrica','Roca con significado cultural',6.260000,-75.560000),
-('JardÌn Bot·nico','ColecciÛn de flora nativa',4.730000,-74.050000);
+('Ruta Gastron√≥mica','Zona con restaurantes locales',4.715000,-74.073000),
+('Piedra Hist√≥rica','Roca con significado cultural',6.260000,-75.560000),
+('Jard√≠n Bot√°nico','Colecci√≥n de flora nativa',4.730000,-74.050000);
 
 --------------------------------------------------------------------------------
 -- TOURS
 --------------------------------------------------------------------------------
-INSERT INTO Tours (nombreTour, puntoDeEncuentroTour, maxParticipantesTour, duraciÛnTour, descripciÛnTour, idGuÌaPrincipalTour, idSitio)
+INSERT INTO Tours (nombreTour, puntoDeEncuentroTour, maxParticipantesTour, duraci√≥nTour, descripci√≥nTour, idGu√≠aPrincipalTour, idSitio)
 VALUES
-('Tour HistÛrico Centro',1,20,2.50,'Recorrido por la plaza y museos principales',11,4),
+('Tour Hist√≥rico Centro',1,20,2.50,'Recorrido por la plaza y museos principales',11,4),
 ('Sendero Bosque',6,12,4.00,'Sendero guiado por bosque andino',12,5),
-('Tour GastronÛmico',10,15,3.00,'DegustaciÛn de platos locales',13,7),
+('Tour Gastron√≥mico',10,15,3.00,'Degustaci√≥n de platos locales',13,7),
 ('Mirador y Atardecer',5,10,1.75,'Caminata hasta el mirador y vista al atardecer',14,6),
-('Playas del Norte',4,30,5.00,'DÌa en la playa con actividades',11,3);
+('Playas del Norte',4,30,5.00,'D√≠a en la playa con actividades',11,3);
 
 --------------------------------------------------------------------------------
--- IdiomasPorTour, Tem·ticasDelTour, puntosDeInterÈsPorTour
+-- IdiomasPorTour, Tem√°ticasDelTour, puntosDeInter√©sPorTour
 --------------------------------------------------------------------------------
 INSERT INTO IdiomasPorTour (idIdioma,idTour) VALUES
 (1,1),(1,2),(1,3),(2,3),(2,5),(1,5);
 
-INSERT INTO Tem·ticasDelTour (idTem·tica,idTour) VALUES
+INSERT INTO Tem√°ticasDelTour (idTem√°tica,idTour) VALUES
 (1,1),(2,2),(3,3),(6,5),(2,5);
 
-INSERT INTO puntosDeInterÈsPorTour (idPuntoDeInterÈs,idTour) VALUES
+INSERT INTO puntosDeInter√©sPorTour (idPuntoDeInter√©s,idTour) VALUES
 (1,1),(2,1),(3,1),
 (6,2),(7,2),
 (10,3),(11,3),
@@ -270,7 +270,7 @@ INSERT INTO FechasPorTour (idFechaTour, idTour) VALUES
 --------------------------------------------------------------------------------
 -- SesionesTour (usa CAST para TIME)
 --------------------------------------------------------------------------------
-INSERT INTO SesionesTour (idFechaTour, horaInicioSesiÛn, horaFinSesiÛn) VALUES
+INSERT INTO SesionesTour (idFechaTour, horaInicioSesi√≥n, horaFinSesi√≥n) VALUES
 (1,CAST('09:00' AS TIME),CAST('11:30' AS TIME)),
 (2,CAST('14:00' AS TIME),CAST('16:30' AS TIME)),
 (3,CAST('08:00' AS TIME),CAST('12:00' AS TIME)),
@@ -281,18 +281,18 @@ INSERT INTO SesionesTour (idFechaTour, horaInicioSesiÛn, horaFinSesiÛn) VALUES
 --------------------------------------------------------------------------------
 -- EstadosReserva
 --------------------------------------------------------------------------------
-INSERT INTO EstadosReserva (nombreEstado, descripciÛnEstado) VALUES
-('Pendiente','Reserva creada, pendiente de confirmaciÛn'),
-('Confirmada','Reserva confirmada por el guÌa'),
-('Cancelada','Reserva cancelada por usuario o guÌa'),
-('Finalizada','Reserva que se cumpliÛ'),
-('Expirada','No se usÛ el servicio'),
+INSERT INTO EstadosReserva (nombreEstado, descripci√≥nEstado) VALUES
+('Pendiente','Reserva creada, pendiente de confirmaci√≥n'),
+('Confirmada','Reserva confirmada por el gu√≠a'),
+('Cancelada','Reserva cancelada por usuario o gu√≠a'),
+('Finalizada','Reserva que se cumpli√≥'),
+('Expirada','No se us√≥ el servicio'),
 ('En curso','Reserva en desarrollo');
 
 --------------------------------------------------------------------------------
 -- RESERVAS (referencian Turistas y SesionesTour)
 --------------------------------------------------------------------------------
-INSERT INTO Reservas (idTurista, cuposReservados, idSesiÛnTour, fechaRealizaciÛnReserva, fechaFinalizaciÛnReserva)
+INSERT INTO Reservas (idTurista, cuposReservados, idSesi√≥nTour, fechaRealizaci√≥nReserva, fechaFinalizaci√≥nReserva)
 VALUES
 (1,2,1,'2025-10-01','2025-11-20'),
 (2,1,2,'2025-10-05','2025-11-22'),
@@ -300,47 +300,47 @@ VALUES
 (4,1,4,'2025-08-20',NULL);
 
 --------------------------------------------------------------------------------
--- EstadosPorReserva (registro histÛrico)
+-- EstadosPorReserva (registro hist√≥rico)
 --------------------------------------------------------------------------------
 
-INSERT INTO EstadosPorReserva (idReserva, idEstado, descripciÛnEstadosPorReserva, fechaInicioEstado, fechaFinEstado) VALUES
+INSERT INTO EstadosPorReserva (idReserva, idEstado, descripci√≥nEstadosPorReserva, fechaInicioEstado, fechaFinEstado) VALUES
 (1,1,'Reserva creada','2025-01-01 10:00','2025-10-02 12:00'),
-(1,2,'Confirmada por guÌa','2025-01-02 12:00','2025-11-15 00:00'),
+(1,2,'Confirmada por gu√≠a','2025-01-02 12:00','2025-11-15 00:00'),
 (2,1,'Pendiente de pago','2025-10-05 09:00','2025-10-06 09:00'),
 (3,5,'Expirada por no asistir','2025-09-15 00:00','2025-09-16 00:00');
 
 --------------------------------------------------------------------------------
--- Tem·ticasPreferidasPorGuÌa y Tem·ticasPreferidaPorTurista
+-- Tem√°ticasPreferidasPorGu√≠a y Tem√°ticasPreferidaPorTurista
 --------------------------------------------------------------------------------
-INSERT INTO Tem·ticasPreferidasPorGuÌa (idGuÌa, idTem·tica) VALUES
+INSERT INTO Tem√°ticasPreferidasPorGu√≠a (idGu√≠a, idTem√°tica) VALUES
 (11,1),(11,2),(11,3),(11,4),(12,2),(13,3),(14,5);
 
-INSERT INTO Tem·ticasPreferidaPorTurista (idTurista, idTem·tica) VALUES
+INSERT INTO Tem√°ticasPreferidaPorTurista (idTurista, idTem√°tica) VALUES
 (1,1),(2,3),(3,2),(4,3),(5,6);
 
 --------------------------------------------------------------------------------
 -- SERVICIOS
 --------------------------------------------------------------------------------
-INSERT INTO Servicios (nombreServicio, descripciÛnServicio, costoServicio, idRangoEdad) VALUES
+INSERT INTO Servicios (nombreServicio, descripci√≥nServicio, costoServicio, idRangoEdad) VALUES
 ('Transporte','Transporte ida y vuelta',45000.00,1),
-('Almuerzo','Almuerzo tÌpico incluido',30000.00,1),
-('Equipo de seguridad','ArnÈs y casco (si aplica)',15000.00,3);
+('Almuerzo','Almuerzo t√≠pico incluido',30000.00,1),
+('Equipo de seguridad','Arn√©s y casco (si aplica)',15000.00,3);
 
 --------------------------------------------------------------------------------
--- Tem·ticasDelPuntoDeInterÈs y ServiciosPuntosDeInterÈs
+-- Tem√°ticasDelPuntoDeInter√©s y ServiciosPuntosDeInter√©s
 --------------------------------------------------------------------------------
-INSERT INTO Tem·ticasDelPuntoDeInterÈs (idTem·tica, idPuntoDeInterÈs) VALUES
+INSERT INTO Tem√°ticasDelPuntoDeInter√©s (idTem√°tica, idPuntoDeInter√©s) VALUES
 (1,1),(2,6),(3,10),(6,7),(4,8);
 
-INSERT INTO ServiciosPuntosDeInterÈs (idPuntoDeInterÈs, idServicio) VALUES
+INSERT INTO ServiciosPuntosDeInter√©s (idPuntoDeInter√©s, idServicio) VALUES
 (6,1),(5,2),(7,3),(10,2);
 
 --------------------------------------------------------------------------------
 -- PRESTADORES DE SERVICIOS
 --------------------------------------------------------------------------------
-INSERT INTO PrestadoresDeServicios (nombreComercialPrestador, emailPrestadorServicio, razÛnSocialPrestadorServicio, descripciÛnPrestadorServicio) VALUES
-('Transporte Express','contacto@transporteexp.com','Transporte Express S.A.S.','Servicio de transporte turÌstico'),
-('Catering Local','info@cateringlocal.com','Catering Local S.A.','Servicios de alimentaciÛn para eventos'),
+INSERT INTO PrestadoresDeServicios (nombreComercialPrestador, emailPrestadorServicio, raz√≥nSocialPrestadorServicio, descripci√≥nPrestadorServicio) VALUES
+('Transporte Express','contacto@transporteexp.com','Transporte Express S.A.S.','Servicio de transporte tur√≠stico'),
+('Catering Local','info@cateringlocal.com','Catering Local S.A.','Servicios de alimentaci√≥n para eventos'),
 ('Aventuras SAS','hola@aventuras.com','Aventuras SAS','Operador de actividades de aventura');
 
 -- TipoPorPrestadorDeServicio (relaciones)
@@ -356,104 +356,104 @@ INSERT INTO SitiosPorPrestadorDeServicio (idPrestadorServicio, idSitio) VALUES
 (1,1),(2,7),(3,5);
 
 --------------------------------------------------------------------------------
--- TEL…FONOS (cumplen CHECK +CC NNN...)
+-- TEL√âFONOS (cumplen CHECK +CC NNN...)
 --------------------------------------------------------------------------------
-INSERT INTO TelÈfonos (n˙meroTelÈfono, observacionesTelÈfono, esPrincipal, idTipoTelÈfono, idPaÌs) VALUES
+INSERT INTO Tel√©fonos (n√∫meroTel√©fono, observacionesTel√©fono, esPrincipal, idTipoTel√©fono, idPa√≠s) VALUES
 ('+57 3001234567','Personal',1,1,1),
 ('+57 3109876543','Oficina',0,3,1),
 ('+57 6021234567','Fijo oficina',0,2,1),
 ('+01 2025550183','Contacto USA',1,1,2);
 
--- TelÈfonosUsuarios
-INSERT INTO TelÈfonosUsuarios (idTelÈfono, idUsuario) VALUES
+-- Tel√©fonosUsuarios
+INSERT INTO Tel√©fonosUsuarios (idTel√©fono, idUsuario) VALUES
 (1,1),(2,2),(3,11),(4,15);
 
--- TelÈfonosPrestadoresDeServicio
-INSERT INTO TelÈfonosPrestadoresDeServicio (idTelÈfono, idPrestadorServicio) VALUES
+-- Tel√©fonosPrestadoresDeServicio
+INSERT INTO Tel√©fonosPrestadoresDeServicio (idTel√©fono, idPrestadorServicio) VALUES
 (2,1),(3,2);
 
--- TelÈfonosEps
-INSERT INTO TelÈfonosEps (idTelÈfono, idEps) VALUES
+-- Tel√©fonosEps
+INSERT INTO Tel√©fonosEps (idTel√©fono, idEps) VALUES
 (1,1),(2,2);
 
 --------------------------------------------------------------------------------
--- ETIQUETAS Y RELACIONES CON RESE—AS
+-- ETIQUETAS Y RELACIONES CON RESE√ëAS
 --------------------------------------------------------------------------------
-INSERT INTO Etiquetas (nombreEtiqueta, descripciÛnEtiqueta) VALUES
+INSERT INTO Etiquetas (nombreEtiqueta, descripci√≥nEtiqueta) VALUES
 ('Familiar','Apto para familias'),('Aventura','Actividades de aventura'),
-('Cultural','InterÈs cultural'),('Relax','Actividades tranquilas');
+('Cultural','Inter√©s cultural'),('Relax','Actividades tranquilas');
 
 --------------------------------------------------------------------------------
--- ARCHIVOSPORRESE—AS y ARCHIVOS MULTIMEDIA ya cargados arriba
-INSERT INTO ArchivosPorReseÒas (fechaSubidaArchivo, idReseÒa, idArchivoMultimedia) VALUES
+-- RESE√ëAS (INSERTAR ANTES DE TABLAS QUE DEPENDEN DE ELLAS)
+--------------------------------------------------------------------------------
+INSERT INTO Rese√±as (fechaPublicaci√≥nRese√±a, comentarioRese√±a, idPerfil, idValorCalificaci√≥n) VALUES
+('2025-01-10 12:00','Recorrido muy interesante',1,5),
+('2025-03-05 16:30','Buena experiencia, gu√≠a amable',2,4),
+('2025-06-20 09:00','El sendero estaba bien mantenido',3,4),
+('2025-07-01 11:00','Comida deliciosa',4,5);
+
+--------------------------------------------------------------------------------
+-- ARCHIVOSPORRESE√ëAS y ARCHIVOS MULTIMEDIA ya cargados arriba
+INSERT INTO ArchivosPorRese√±as (fechaSubidaArchivo, idRese√±a, idArchivoMultimedia) VALUES
 ('2021-01-05 11:40',3,3),
 ('2025-01-10 12:05',1,1),
 ('2025-03-05 16:40',2,2);
 
---------------------------------------------------------------------------------
--- RESE—AS (INSERTAR ANTES DE TABLAS QUE DEPENDEN DE ELLAS)
---------------------------------------------------------------------------------
-INSERT INTO ReseÒas (fechaPublicaciÛnReseÒa, comentarioReseÒa, idPerfil, idValorCalificaciÛn) VALUES
-('2025-01-10 12:00','Recorrido muy interesante',1,5),
-('2025-03-05 16:30','Buena experiencia, guÌa amable',2,4),
-('2025-06-20 09:00','El sendero estaba bien mantenido',3,4),
-('2025-07-01 11:00','Comida deliciosa',4,5);
+-- Rese√±asDelPuntoTur√≠stico / Rese√±asDelTour / Rese√±asDelGu√≠a / Rese√±asPrestadorDeServicios
+INSERT INTO Rese√±asDelPuntoTur√≠stico (idRese√±aPunto, idPuntoTur√≠stico) VALUES (1,1);
+INSERT INTO Rese√±asDelTour (idRese√±aTour, idTour) VALUES (2,1);
+INSERT INTO Rese√±asDelGu√≠a (idRese√±aGu√≠a, idGu√≠aRese√±ado) VALUES (3,12);
+-- No se inserta Rese√±asPrestadorDeServicios con NULL; si quieres agregar, indica idPrestador v√°lido.
 
--- ReseÒasDelPuntoTurÌstico / ReseÒasDelTour / ReseÒasDelGuÌa / ReseÒasPrestadorDeServicios
-INSERT INTO ReseÒasDelPuntoTurÌstico (idReseÒaPunto, idPuntoTurÌstico) VALUES (1,1);
-INSERT INTO ReseÒasDelTour (idReseÒaTour, idTour) VALUES (2,1);
-INSERT INTO ReseÒasDelGuÌa (idReseÒaGuÌa, idGuÌaReseÒado) VALUES (3,12);
--- No se inserta ReseÒasPrestadorDeServicios con NULL; si quieres agregar, indica idPrestador v·lido.
-
--- EtiquetasPorReseÒa (usa reseÒas ya existentes)
-INSERT INTO EtiquetasPorReseÒa (idEtiqueta, idReseÒa) VALUES (1,1),(3,2),(2,3);
+-- EtiquetasPorRese√±a (usa rese√±as ya existentes)
+INSERT INTO EtiquetasPorRese√±a (idEtiqueta, idRese√±a) VALUES (1,1),(3,2),(2,3);
 
 --------------------------------------------------------------------------------
--- DETALLESRESE—AS (dependen de DetallesAdicionales y ValoresCalificaciÛn y ReseÒas)
+-- DETALLESRESE√ëAS (dependen de DetallesAdicionales y ValoresCalificaci√≥n y Rese√±as)
 --------------------------------------------------------------------------------
-INSERT INTO DetallesReseÒas (idDetalleAdicional, idValorCalificaciÛn, idReseÒa) VALUES
+INSERT INTO DetallesRese√±as (idDetalleAdicional, idValorCalificaci√≥n, idRese√±a) VALUES
 (1,5,1),(3,4,2);
 
 --------------------------------------------------------------------------------
 -- MEDIOSDE PAGO
 --------------------------------------------------------------------------------
-INSERT INTO MediosDePago (nombreMedioDePago, descripciÛnMedioDePago, requiereComisiÛn) VALUES
-('Tarjeta crÈdito','Pago con tarjeta',1),
+INSERT INTO MediosDePago (nombreMedioDePago, descripci√≥nMedioDePago, requiereComisi√≥n) VALUES
+('Tarjeta cr√©dito','Pago con tarjeta',1),
 ('Efectivo','Pago en efectivo',0),
 ('Transferencia','PSE o transferencia bancaria',1);
 
 --------------------------------------------------------------------------------
--- PROPINAS (requieren GuÌas, MediosDePago, Tours y Monedas)
+-- PROPINAS (requieren Gu√≠as, MediosDePago, Tours y Monedas)
 --------------------------------------------------------------------------------
-INSERT INTO Propinas (fechaPagoPropina, montoPropina, idGuÌa, idMedioDePago, idTour, idMoneda) VALUES
+INSERT INTO Propinas (fechaPagoPropina, montoPropina, idGu√≠a, idMedioDePago, idTour, idMoneda) VALUES
 ('2025-07-02 14:00',20000.00,11,2,1,1),
 ('2025-08-10 12:30',15000.00,12,1,2,1);
 
 --------------------------------------------------------------------------------
--- CALIFICACIONESRESE—A Y CALIFICACIONESDE LARESENA POR PERFIL
+-- CALIFICACIONESRESE√ëA Y CALIFICACIONESDE LARESENA POR PERFIL
 --------------------------------------------------------------------------------
-INSERT INTO CalificacionesReseÒa (idReseÒa, idValorCalificaciÛn, comentario) VALUES
-(1,5,'Excelente reseÒa y muy ˙til'),
-(2,4,'OpiniÛn sÛlida');
+INSERT INTO CalificacionesRese√±a (idRese√±a, idValorCalificaci√≥n, comentario) VALUES
+(1,5,'Excelente rese√±a y muy √∫til'),
+(2,4,'Opini√≥n s√≥lida');
 
-INSERT INTO CalificacionesDeLaReseÒaPorPerfil (idCalificaciÛn, idPerfil) VALUES
+INSERT INTO CalificacionesDeLaRese√±aPorPerfil (idCalificaci√≥n, idPerfil) VALUES
 (1,2),(2,1);
 
 --------------------------------------------------------------------------------
--- TEM¡TICAS RELACIONADAS CON PUNTOS DE INTER…S y SERVICIOS ya pobladas arriba
+-- TEM√ÅTICAS RELACIONADAS CON PUNTOS DE INTER√âS y SERVICIOS ya pobladas arriba
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
--- GUÕAS POR TOUR (evita repetir pares)
+-- GU√çAS POR TOUR (evita repetir pares)
 --------------------------------------------------------------------------------
-INSERT INTO GuÌasPorTour (idGuÌa, idTour) VALUES
+INSERT INTO Gu√≠asPorTour (idGu√≠a, idTour) VALUES
 (11,1),(12,2),(13,3),(14,4),(11,5),(12,5);
 
 --------------------------------------------------------------------------------
 -- PAISES POR USUARIOS y MONEDAS POR PAISES
 --------------------------------------------------------------------------------
-INSERT INTO PaÌsesPorUsuarios (idUsuario, idPaÌs) VALUES (1,1),(2,1),(4,1),(15,2);
-INSERT INTO MonedasPorPaÌses (idMoneda, idPaÌs) VALUES (1,1),(2,2);
+INSERT INTO Pa√≠sesPorUsuarios (idUsuario, idPa√≠s) VALUES (1,1),(2,1),(4,1),(15,2);
+INSERT INTO MonedasPorPa√≠ses (idMoneda, idPa√≠s) VALUES (1,1),(2,2);
 
 --------------------------------------------------------------------------------
 -- FIN
