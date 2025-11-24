@@ -96,9 +96,10 @@ CREATE FUNCTION Ranking_departamentos_cantidad_tours_por_región(@idRegion INT)
 RETURNS TABLE
 AS
 RETURN 
-	SELECT	d.nombreDepartamento,
+	SELECT	d.idDepartamento,
+			d.nombreDepartamento,
 			COUNT(t.idTour) as [cantidad de tours],
-			ROW_NUMBER() OVER(ORDER BY COUNT(t.idTour) DESC) as [ranking]
+			DENSE_RANK() OVER(ORDER BY COUNT(t.idTour) DESC) as [ranking]
 	FROM Tours as t
 	JOIN Sitios as s
 		ON s.idSitio = t.idSitio
