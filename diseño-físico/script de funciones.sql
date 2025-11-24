@@ -3,8 +3,8 @@ GO
 
 --obtener la cantidad de propina de recibida por un guia historicamente para
 --conocer que guias tienen un mejor manejo y habilidades en este negocio
-CREATE FUNCTION Obtener_propina_por_gu�a (
-	@idGu�a INT
+CREATE FUNCTION Obtener_propina_por_guía (
+	@idGuía INT
 )
 RETURNS DECIMAL(15,2)
 AS
@@ -12,7 +12,7 @@ BEGIN
 	DECLARE @total DECIMAL(15,2);
 	SELECT	@total = SUM(p.montoPropina)
 	FROM Propinas as p
-	WHERE p.idGu�a = @idGu�a;
+	WHERE p.idGuía = @idGuía;
 
 	RETURN @total;
 END;
@@ -20,7 +20,7 @@ GO
 
 
 --Obtener la humedad promedio de una region de colombia
-CREATE FUNCTION Promedio_humedad_regi�n (@idRegi�n INT)
+CREATE FUNCTION Promedio_humedad_región (@idRegión INT)
 RETURNS DECIMAL(15,2)
 AS
 BEGIN
@@ -32,8 +32,8 @@ BEGIN
 	JOIN Climas as c
 		ON c.idClima = cd.idClima
 	JOIN Regiones as r
-		ON r.idRegi�n = d.idRegi�n
-	WHERE @idRegi�n = r.idRegi�n;
+		ON r.idRegión = d.idRegión
+	WHERE @idRegión = r.idRegión;
 
 	RETURN @total;
 END;
@@ -41,7 +41,7 @@ GO
 
 
 --Obtenemos la cantidad de tours disponibles que tiene un guia en su catalogo
-CREATE FUNCTION Cantidad_tours_disponibles_por_gu�a (@idGuia INT)
+CREATE FUNCTION Cantidad_tours_disponibles_por_guía (@idGuia INT)
 RETURNS INT
 AS
 BEGIN
@@ -52,7 +52,7 @@ BEGIN
 		ON et.idTour = t.idTour
 	JOIN Estados as e
 		ON e.idEstado = et.idEstado
-	WHERE e.nombreEstado = 'Disponible' AND t.idGu�aTour = @idGuia;
+	WHERE e.nombreEstado = 'Disponible' AND t.idGuíaTour = @idGuia;
 
 	RETURN @total;
 END;
@@ -73,26 +73,26 @@ GO
 
 		
 --Corrobora si los servicios de un punto de interes especifico tiene un costo elevado o aceptable
-CREATE FUNCTION Clasificaci�n_precio_Servicios_por_puntoInteres (@idPuntoInteres INT, @valorMinimo DECIMAL(15,2))
+CREATE FUNCTION Clasificación_precio_Servicios_por_puntoInteres (@idPuntoInteres INT, @valorMinimo DECIMAL(15,2))
 RETURNS TABLE
 AS 
 RETURN 
-	SELECT pdi.nombrePuntoDeInter�s ,s.nombreServicio, 
+	SELECT pdi.nombrePuntoDeInterés ,s.nombreServicio, 
 			CASE
 				WHEN s.costoServicio > @valorMinimo THEN 'Costoso'
 				ELSE 'Precio aceptable'
-				END as [clasificaci�n precio]
+				END as [clasificación precio]
 	FROM Servicios as s
-	JOIN ServiciosPuntosDeInter�s as spi
+	JOIN ServiciosPuntosDeInterés as spi
 		ON spi.idServicio = s.idServicio
-	JOIN PuntosDeInter�s as pdi
-		ON pdi.idPuntoDeInter�s = spi.idPuntoDeInter�s
-	WHERE pdi.idPuntoDeInter�s = @idPuntoInteres;
+	JOIN PuntosDeInterés as pdi
+		ON pdi.idPuntoDeInterés = spi.idPuntoDeInterés
+	WHERE pdi.idPuntoDeInterés = @idPuntoInteres;
 GO
 
 
 --Ranking de los departamentos de una region en especifico
-CREATE FUNCTION Ranking_departamentos_cantidad_tours_por_regi�n(@idRegion INT)
+CREATE FUNCTION Ranking_departamentos_cantidad_tours_por_región(@idRegion INT)
 RETURNS TABLE
 AS
 RETURN 
@@ -105,47 +105,47 @@ RETURN
 	JOIN Departamentos as d
 		ON d.idDepartamento = s.idDepartamento
 	JOIN Regiones as r
-		ON r.idRegi�n = d.idDepartamento
-	WHERE r.idRegi�n = @idRegion
+		ON r.idRegión = d.idRegión
+	WHERE r.idRegión = @idRegion
 	GROUP BY d.idDepartamento;
 GO
 
 
---Promedio de calificaci�n de x gu�a
-CREATE FUNCTION promedio_calificaci�n_gu�a (@idGu�a INT)
+--Promedio de calificación de x guía
+CREATE FUNCTION promedio_calificación_guía (@idGuía INT)
 RETURNS DECIMAL(15,2)
 AS 
 BEGIN
 	DECLARE @resultado DECIMAL(2,2);
-	SELECT @resultado = AVG(vc.valorNum�rico)
-	FROM Rese�asDelGu�a as rg
-	JOIN Gu�as as g
-		ON g.idPerfilGu�a = rg.idGuiaRese�ado
-	JOIN Rese�as as r
-		ON r.idRese�a = rg.idRese�aGu�a
-	JOIN ValoresCalificaci�n as vc
-		ON vc.idValorCalificaci�n = r.idValorCalificaci�n
-	WHERE rg.idGuiaRese�ado=@idGu�a;
+	SELECT @resultado = AVG(vc.valorNumérico)
+	FROM ReseñasDelGuía as rg
+	JOIN Guías as g
+		ON g.idPerfilGuía = rg.idGuiaReseñado
+	JOIN Reseñas as r
+		ON r.idReseña = rg.idReseñaGuía
+	JOIN ValoresCalificación as vc
+		ON vc.idValorCalificación = r.idValorCalificación
+	WHERE rg.idGuiaReseñado=@idGuía;
 
 	RETURN @resultado;
 END;
 GO
 
 
---Promedio de calificaci�n de x tour
-CREATE FUNCTION promedio_calificaci�n_tour (@idTour INT)
+--Promedio de calificación de x tour
+CREATE FUNCTION promedio_calificación_tour (@idTour INT)
 RETURNS DECIMAL(15,2)
 AS 
 BEGIN
 	DECLARE @resultado DECIMAL(2,2);
-	SELECT @resultado = AVG(vc.valorNum�rico)
-	FROM Rese�asDelTour as rt
+	SELECT @resultado = AVG(vc.valorNumérico)
+	FROM ReseñasDelTour as rt
 	JOIN Tours as t
 		ON t.idTour = rt.idTour
-	JOIN Rese�as as r
-		ON r.idRese�a = rt.idRese�aTour
-	JOIN ValoresCalificaci�n as vc
-		ON vc.idValorCalificaci�n = r.idValorCalificaci�n
+	JOIN Reseñas as r
+		ON r.idReseña = rt.idReseñaTour
+	JOIN ValoresCalificación as vc
+		ON vc.idValorCalificación = r.idValorCalificación
 	WHERE rt.idTour = @idTour;
 
 	RETURN @resultado;
@@ -160,10 +160,10 @@ AS
 RETURN 
 	SELECT re.nombreRangoEdad, t.nombreTour
 	FROM Tours as t
-	JOIN Tem�ticasDelTour as tt
+	JOIN TemáticasDelTour as tt
 		ON tt.idTour = t.idTour
-	JOIN Tem�ticas as te
-		ON te.idTem�tica = tt.idTem�tica
+	JOIN Temáticas as te
+		ON te.idTemática = tt.idTemática
 	JOIN RangosEdades as re
 		ON re.idRangoEdad = te.idRangoEdadRecomendada
 	WHERE @idRangoEdad = re.idRangoEdad;
@@ -171,7 +171,7 @@ GO
 
 
 --Obtener la temperatura promedio de una region de colombia
-CREATE FUNCTION Promedio_temperatura_regi�n (@idRegi�n INT)
+CREATE FUNCTION Promedio_temperatura_región (@idRegión INT)
 RETURNS DECIMAL(15,2)
 AS
 BEGIN
@@ -183,25 +183,25 @@ BEGIN
 	JOIN Climas as c
 		ON c.idClima = cd.idClima
 	JOIN Regiones as r
-		ON r.idRegi�n = d.idRegi�n
-	WHERE @idRegi�n = r.idRegi�n;
+		ON r.idRegión = d.idRegión
+	WHERE @idRegión = r.idRegión;
 
 	RETURN @total;
 END;
 GO
 
---Obtiene los tours por gu�as 
-CREATE FUNCTION Tours_por_gu�a (@idGu�a INT)
+--Obtiene los tours por guías 
+CREATE FUNCTION Tours_por_guía (@idGuía INT)
 RETURNS TABLE
 AS 
 RETURN 
-	SELECT	t.idTour, t.idGu�aTour, t.nombreTour as [nombre tour], u.nombreUsuario as [nombre gu�a]
+	SELECT	t.idTour, t.idGuíaTour, t.nombreTour as [nombre tour], u.nombreUsuario as [nombre guía]
 	FROM Tours as t
-	JOIN Gu�as as g
-		ON g.idPerfilGu�a = t.idGu�aTour
+	JOIN Guías as g
+		ON g.idPerfilGuía = t.idGuíaTour
 	JOIN Perfiles as p
-		ON p.idPerfilUsuario = g.idPerfilGu�a
+		ON p.idPerfilUsuario = g.idPerfilGuía
 	JOIN Usuarios as u
 		ON u.idUsuario = p.idPerfilUsuario
-	WHERE @idGu�a = g.idPerfilGu�a;
+	WHERE @idGuía = g.idPerfilGuía;
 GO
