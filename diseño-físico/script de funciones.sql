@@ -98,7 +98,7 @@ AS
 RETURN 
 	SELECT	d.nombreDepartamento,
 			COUNT(t.idTour) as [cantidad de tours],
-			ROW_NUMBER() OVER(PARTITION BY d.idDepartamento ORDER BY COUNT(t.idTour) DESC) as [ranking]
+			ROW_NUMBER() OVER(ORDER BY COUNT(t.idTour) DESC) as [ranking]
 	FROM Tours as t
 	JOIN Sitios as s
 		ON s.idSitio = t.idSitio
@@ -107,9 +107,8 @@ RETURN
 	JOIN Regiones as r
 		ON r.idRegión = d.idRegión
 	WHERE r.idRegión = @idRegion
-	GROUP BY d.idDepartamento;
+	GROUP BY d.nombreDepartamento,d.idDepartamento;
 GO
-
 
 --Promedio de calificación de x guía
 CREATE FUNCTION promedio_calificación_guía (@idGuía INT)
