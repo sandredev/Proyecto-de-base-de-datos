@@ -284,7 +284,7 @@ SELECT
     COUNT(r.idReseña) AS 'Cantidad de Reseñas'
 FROM PuntosDeInterés p
 JOIN ReseñasDelPuntoTurístico rp ON rp.idPuntoTurístico = p.idPuntoDeInterés
-JOIN Reseñas r ON r.idPerfil = rp.idReseñaPunto
+JOIN Reseñas r ON r.idReseña = rp.idReseñaPunto
 GROUP BY p.nombrePuntoDeInterés
 HAVING COUNT(r.idReseña) < 3
 
