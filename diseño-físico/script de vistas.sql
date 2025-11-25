@@ -159,7 +159,6 @@ JOIN Usuarios u ON p.idPerfilUsuario = u.idUsuario
 LEFT JOIN ToursPorGuia ct ON g.idPerfilGuía = ct.idGuia
 
 GO
-
 -----------------9. Cantidad de idiomas manejados por los guias-------------
 CREATE OR ALTER VIEW CantidadIdiomasGuia AS
 SELECT 
@@ -342,3 +341,5 @@ SELECT
     COUNT(idTour) AS 'Cantidad de tours'
 FROM Duraciones
 GROUP BY nombreRegión;
+
+SELECT * FROM AntiguedadDeTours;

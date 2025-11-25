@@ -3,8 +3,13 @@ GO
 
 --obtener la cantidad de propina de recibida por un guia historicamente para
 --conocer que guias tienen un mejor manejo y habilidades en este negocio
+<<<<<<< HEAD
 CREATE FUNCTION Obtener_propina_por_gu铆a (
 	@idGu铆a INT
+=======
+CREATE OR ALTER FUNCTION Obtener_propina_por_gu韆 (
+	@idGu韆 INT
+>>>>>>> 3d97c96 (Correcci贸n de errores menores)
 )
 RETURNS DECIMAL(15,2)
 AS
@@ -20,7 +25,11 @@ GO
 
 
 --Obtener la humedad promedio de una region de colombia
+<<<<<<< HEAD
 CREATE FUNCTION Promedio_humedad_regi贸n (@idRegi贸n INT)
+=======
+CREATE OR ALTER FUNCTION Promedio_humedad_regi髇 (@idRegi髇 INT)
+>>>>>>> 3d97c96 (Correcci贸n de errores menores)
 RETURNS DECIMAL(15,2)
 AS
 BEGIN
@@ -41,7 +50,11 @@ GO
 
 
 --Obtenemos la cantidad de tours disponibles que tiene un guia en su catalogo
+<<<<<<< HEAD
 CREATE FUNCTION Cantidad_tours_disponibles_por_gu铆a (@idGuia INT)
+=======
+CREATE OR ALTER FUNCTION Cantidad_tours_disponibles_por_gu韆 (@idGu韆 INT)
+>>>>>>> 3d97c96 (Correcci贸n de errores menores)
 RETURNS INT
 AS
 BEGIN
@@ -52,7 +65,11 @@ BEGIN
 		ON et.idTour = t.idTour
 	JOIN Estados as e
 		ON e.idEstado = et.idEstado
+<<<<<<< HEAD
 	WHERE e.nombreEstado = 'Disponible' AND t.idGu铆aTour = @idGuia;
+=======
+	WHERE e.nombreEstado = 'Disponible' AND t.idGu韆PrincipalTour = @idGu韆;
+>>>>>>> 3d97c96 (Correcci贸n de errores menores)
 
 	RETURN @total;
 END;
@@ -60,7 +77,7 @@ GO
 
 
 --Retorna todos los tours que se realizan en algun sitio en especifico 
-CREATE FUNCTION Tours_sitio (@sitio Varchar(100))
+CREATE OR ALTER FUNCTION Tours_sitio (@sitio Varchar(100))
 RETURNS TABLE
 AS
 RETURN
@@ -73,7 +90,11 @@ GO
 
 		
 --Corrobora si los servicios de un punto de interes especifico tiene un costo elevado o aceptable
+<<<<<<< HEAD
 CREATE FUNCTION Clasificaci贸n_precio_Servicios_por_puntoInteres (@idPuntoInteres INT, @valorMinimo DECIMAL(15,2))
+=======
+CREATE OR ALTER FUNCTION Clasificaci髇_precio_Servicios_por_puntoInteres (@idPuntoInteres INT, @valorMinimo DECIMAL(15,2))
+>>>>>>> 3d97c96 (Correcci贸n de errores menores)
 RETURNS TABLE
 AS 
 RETURN 
@@ -92,7 +113,11 @@ GO
 
 
 --Ranking de los departamentos de una region en especifico
+<<<<<<< HEAD
 CREATE FUNCTION Ranking_departamentos_cantidad_tours_por_regi贸n(@idRegion INT)
+=======
+CREATE OR ALTER FUNCTION Ranking_departamentos_cantidad_tours_por_regi髇(@idRegion INT)
+>>>>>>> 3d97c96 (Correcci贸n de errores menores)
 RETURNS TABLE
 AS
 RETURN 
@@ -106,6 +131,7 @@ RETURN
 	JOIN Departamentos as d
 		ON d.idDepartamento = s.idDepartamento
 	JOIN Regiones as r
+<<<<<<< HEAD
 		ON r.idRegi贸n = d.idRegi贸n
 	WHERE r.idRegi贸n = @idRegion
 	GROUP BY d.nombreDepartamento,d.idDepartamento;
@@ -113,10 +139,21 @@ GO
 
 --Promedio de calificaci贸n de x gu铆a
 CREATE FUNCTION promedio_calificaci贸n_gu铆a (@idGu铆a INT)
+=======
+		ON r.idRegi髇 = d.idRegi髇
+	WHERE r.idRegi髇 = @idRegion
+	GROUP BY d.idDepartamento;
+GO
+
+
+--Promedio de calificaci髇 de x gu韆
+CREATE OR ALTER FUNCTION promedio_calificaci髇_gu韆 (@idGu韆 INT)
+>>>>>>> 3d97c96 (Correcci贸n de errores menores)
 RETURNS DECIMAL(15,2)
 AS 
 BEGIN
 	DECLARE @resultado DECIMAL(2,2);
+<<<<<<< HEAD
 	SELECT @resultado = AVG(vc.valorNum茅rico)
 	FROM Rese帽asDelGu铆a as rg
 	JOIN Gu铆as as g
@@ -126,14 +163,30 @@ BEGIN
 	JOIN ValoresCalificaci贸n as vc
 		ON vc.idValorCalificaci贸n = r.idValorCalificaci贸n
 	WHERE rg.idGuiaRese帽ado=@idGu铆a;
+=======
+	SELECT @resultado = AVG(vc.valorNum閞ico)
+	FROM Rese馻sDelGu韆 as rg
+	JOIN Gu韆s as g
+		ON g.idPerfilGu韆 = rg.idGu韆Rese馻do
+	JOIN Rese馻s as r
+		ON r.idRese馻 = rg.idRese馻Gu韆
+	JOIN ValoresCalificaci髇 as vc
+		ON vc.idValorCalificaci髇 = r.idValorCalificaci髇
+	WHERE rg.idGu韆Rese馻do=@idGu韆;
+>>>>>>> 3d97c96 (Correcci贸n de errores menores)
 
 	RETURN @resultado;
 END;
 GO
 
 
+<<<<<<< HEAD
 --Promedio de calificaci贸n de x tour
 CREATE FUNCTION promedio_calificaci贸n_tour (@idTour INT)
+=======
+--Promedio de calificaci髇 de x tour
+CREATE OR ALTER FUNCTION promedio_calificaci髇_tour (@idTour INT)
+>>>>>>> 3d97c96 (Correcci贸n de errores menores)
 RETURNS DECIMAL(15,2)
 AS 
 BEGIN
@@ -154,7 +207,7 @@ GO
 
 
 --Obtener todos los tours asociados a un rango de edad en especifico 
-CREATE FUNCTION Tours_por_rangoEdad(@idRangoEdad INT)
+CREATE OR ALTER FUNCTION Tours_por_rangoEdad(@idRangoEdad INT)
 RETURNS TABLE
 AS
 RETURN 
@@ -171,7 +224,11 @@ GO
 
 
 --Obtener la temperatura promedio de una region de colombia
+<<<<<<< HEAD
 CREATE FUNCTION Promedio_temperatura_regi贸n (@idRegi贸n INT)
+=======
+CREATE OR ALTER FUNCTION Promedio_temperatura_regi髇 (@idRegi髇 INT)
+>>>>>>> 3d97c96 (Correcci贸n de errores menores)
 RETURNS DECIMAL(15,2)
 AS
 BEGIN
@@ -190,6 +247,7 @@ BEGIN
 END;
 GO
 
+<<<<<<< HEAD
 --Obtiene los tours por gu铆as 
 CREATE FUNCTION Tours_por_gu铆a (@idGu铆a INT)
 RETURNS TABLE
@@ -199,6 +257,17 @@ RETURN
 	FROM Tours as t
 	JOIN Gu铆as as g
 		ON g.idPerfilGu铆a = t.idGu铆aTour
+=======
+--Obtiene los tours por gu韆s 
+CREATE OR ALTER FUNCTION Tours_por_gu韆 (@idGu韆 INT)
+RETURNS TABLE
+AS 
+RETURN 
+	SELECT	t.idTour, t.idGu韆PrincipalTour, t.nombreTour as [nombre tour], u.nombreUsuario as [nombre gu韆]
+	FROM Tours as t
+	JOIN Gu韆s as g
+		ON g.idPerfilGu韆 = t.idGu韆PrincipalTour
+>>>>>>> 3d97c96 (Correcci贸n de errores menores)
 	JOIN Perfiles as p
 		ON p.idPerfilUsuario = g.idPerfilGu铆a
 	JOIN Usuarios as u

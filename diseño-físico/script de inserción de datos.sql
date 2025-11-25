@@ -1,4 +1,5 @@
 USE freetour
+GO
 -- Datos de prueba
 INSERT INTO Países(nombrePaís, códigoIsoNúmerico, códigoIso3, códigoTeléfonico)
 VALUES ('Colombia', 123, 'COL', '+57');         
@@ -105,7 +106,8 @@ EXEC registrarTeléfono
 -- que el procedimiento reservar. Parece ser que SQL Server no puede garantizar que se ejecuten
 -- en orden de llamada, lo que produce un conflicto con la CONSTRAINT fechaInicioEstado <= GETDATE().
 -- Ejecutar este procedimiento después de ejecutar reserva en ejecuciones distintas solucionará el problema.
--- No profundicé en este error porque no logro concebir una situación en la que 
+-- No profundicé en este error porque no logro concebir una situación en la que se utilicen ambos procedimientos
+-- al mismo tiempo.
 EXEC cambiarEstadoReserva
 	1,
 	'Cancelada',

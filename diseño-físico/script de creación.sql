@@ -96,7 +96,7 @@ CREATE TABLE Roles (
 );
 
 CREATE TABLE Perfiles (
-	idPerfilUsuario INT PRIMARY KEY REFERENCES Usuarios(idUsuario),
+	idPerfilUsuario INT PRIMARY KEY REFERENCES Usuarios(idUsuario) ON DELETE NO ACTION,
 	nombrePerfil VARCHAR(50) UNIQUE CHECK (TRIM(nombrePerfil) <> ''),
 	contraseñaPerfil VARCHAR(50) CHECK (TRIM(contraseñaPerfil) <> ''),
 	emailPerfil VARCHAR(254) UNIQUE NOT NULL,
@@ -125,8 +125,8 @@ CREATE TABLE Idiomas (
 );
 
 CREATE TABLE IdiomasPorPerfil (
-	idIdioma INT  REFERENCES Idiomas(idIdioma),
-	idPerfil INT  REFERENCES Perfiles(idPerfilUsuario),
+	idIdioma INT REFERENCES Idiomas(idIdioma) ON DELETE CASCADE,
+	idPerfil INT REFERENCES Perfiles(idPerfilUsuario) ON DELETE CASCADE,
 	PRIMARY KEY (idIdioma, idPerfil)
 );
 
@@ -171,8 +171,8 @@ CREATE TABLE Tours (
 );
 
 CREATE TABLE IdiomasPorTour (
-	idIdioma INT  REFERENCES Idiomas(idIdioma),
-	idTour INT  REFERENCES Tours(idTour),
+	idIdioma INT REFERENCES Idiomas(idIdioma) ON DELETE CASCADE,
+	idTour INT REFERENCES Tours(idTour) ON DELETE CASCADE,
 	PRIMARY KEY (idIdioma, idTour)
 );
 
